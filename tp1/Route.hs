@@ -12,3 +12,7 @@ inOrderR (Rou (c:cs)) city1 city2
   | c == city1 = elem city2 cs -- si la primer ciudad es la consultada, entonces la segunda ciudad debe estar en la lista de ciudades restantes
   | c == city2 = False -- si la segunda ciudad es la consultada, entonces la primer ciudad no esta antes
   | otherwise = inOrderR (Rou cs) city1 city2  -- si ninguna de las ciudades es la consultada, se sigue buscando
+
+inRouteR :: Route -> String -> Bool -- indica si la ciudad consultada está en la ruta
+inRouteR (Rou []) city = False -- si la lista de ciudades está vacía, la ciudad no está en la ruta 
+inRouteR (Rou cities) city = elem city cities -- verifica si la ciudad está en la lista de ciudades
