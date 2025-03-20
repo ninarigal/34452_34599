@@ -54,5 +54,9 @@ tests_stack = [
         testF(newS (-1)),
         freeCellsS (newS 1) == 1,
         freeCellsS (stackS (newS 1) (newP "Madrid" 1)) == 0,
-        netS (newS 1) == 0
+        netS (newS 1) == 0,
+        netS (stackS (newS 1) (newP "Madrid" 1)) == 1,
+        testF(netS (stackS (stackS (newS 1) (newP "Madrid" 1)) (newP "Barcelona" 2))),
+        holdsS (newS 2) (newP "Madrid" 1) ruta_corta == True,
+        holdsS (stackS (newS 2) (newP "Madrid" 1)) (newP "Barcelona" 2) ruta_corta == False
     ]
