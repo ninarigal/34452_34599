@@ -1,6 +1,7 @@
 import Palet
 import Route
 import Stack
+import Truck
 
 import Control.Exception
 import System.IO.Unsafe
@@ -46,7 +47,7 @@ tests_route = [
     inRouteR ruta_corta "Barcelona" == True,
     inRouteR ruta_corta "Paris" == True,
     inRouteR ruta_corta "Lisboa" == False
-        ]
+    ]
 
 
 tests_stack = [
@@ -58,5 +59,26 @@ tests_stack = [
         netS (stackS (newS 1) (newP "Madrid" 1)) == 1,
         testF(netS (stackS (stackS (newS 1) (newP "Madrid" 1)) (newP "Barcelona" 2))),
         holdsS (newS 2) (newP "Madrid" 1) ruta_corta == True,
-        holdsS (stackS (newS 2) (newP "Madrid" 1)) (newP "Barcelona" 2) ruta_corta == False
+        holdsS (stackS (newS 2) (newP "Madrid" 1)) (newP "Barcelona" 2) ruta_corta == False,
+        netS (popS (stackS (stackS (newS 2) (newP "Barcelona" 2)) (newP "Madrid" 1)) "Madrid") == netS (stackS (newS 2) (newP "Barcelona" 2)),
+        freeCellsS (popS (stackS (stackS (newS 2) (newP "Barcelona" 2)) (newP "Madrid" 1)) "Paris") == freeCellsS (stackS (stackS (newS 2) (newP "Barcelona" 2)) (newP "Madrid" 1))
     ]
+
+tests_truck = [
+        testF(newT 0 0 ruta_corta),
+        testF(newT 0 1 ruta_corta),
+        testF(newT 1 0 ruta_corta),
+        freeCellsT (newT 1 1 ruta_corta) == 1,
+        freeCellsT (loadT (newT 1 1 ruta_corta) (newP "Madrid" 1)) == 0,
+        freeCellsT (loadT (loadT (newT 1 1 ruta_corta) (newP "Madrid" 1)) (newP "Barcelona" 2)) == freeCellsT (loadT (newT 1 1 ruta_corta) (newP "Madrid" 1)), 
+        netT (newT 1 1 ruta_corta) == 0,
+        netT (loadT (newT 1 1 ruta_corta) (newP "Madrid" 1)) == 1,
+        netT (loadT(loadT (loadT (newT 2 2 ruta_corta) (newP "Madrid" 1)) (newP "Barcelona" 2)) (newP "Paris" 3)) == netT (loadT (loadT (newT 2 2 ruta_corta) (newP "Madrid" 1)) (newP "Barcelona" 2)),
+        netT(loadT( loadT (loadT (newT 2 2 ruta_corta) (newP "Paris" 1)) (newP "Barcelona" 2)) (newP "Madrid" 3)) == 6,
+        netT(unloadT(loadT( loadT (loadT (newT 2 2 ruta_corta) (newP "Paris" 1)) (newP "Barcelona" 2)) (newP "Madrid" 3)) "Madrid") == netT (loadT (loadT (newT 2 2 ruta_corta) (newP "Paris" 1)) (newP "Barcelona" 2)),
+        netT (unloadT(loadT (loadT (newT 2 2 ruta_corta) (newP "Madrid" 1)) (newP "Barcelona" 2)) "Paris") == netT (loadT (loadT (newT 2 2 ruta_corta) (newP "Madrid" 1)) (newP "Barcelona" 2)),
+        netT (unloadT (loadT (newT 1 1 ruta_corta) (newP "Madrid" 1)) "Madrid") == 0,
+        freeCellsT(loadT (newT 1 1 ruta_corta) (newP "Madrid" 11)) == 1,
+        netT(loadT (loadT (loadT (loadT (loadT (newT 3 3 ruta_corta) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Barcelona" 7)) (newP "Londres" 1)) == netT(loadT (loadT (loadT (loadT (newT 3 3 ruta_corta) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Barcelona" 7))
+
+    ]   

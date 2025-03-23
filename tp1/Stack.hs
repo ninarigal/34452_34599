@@ -26,16 +26,16 @@ netS (Sta [] capacity) = 0
 netS (Sta (p:ps) capacity) = netP p + netS (Sta ps capacity)
 
 holdsS :: Stack -> Palet -> Route -> Bool -- indica si la pila puede aceptar el palet considerando las ciudades en la ruta
-holdsS (Sta [] capacity) palet route = inRouteR route (destinationP palet)  -- si la pila está vacía, solo importa si la ciudad está en la ruta
-
+holdsS (Sta [] capacity) palet route = inRouteR route (destinationP palet)
 holdsS (Sta (topPalet:palets) capacity) palet route
-    | inRouteR route (destinationP palet) == False = False -- si la ciudad no está en la ruta, no se puede apilar
-    | destinationP topPalet == destinationP palet = True -- si el destino del palet en el tope es el mismo, se puede apilar
-    | inOrderR route (destinationP palet) (destinationP topPalet) == True = True -- si la ciudad del nuevo palet está antes que la del tope, se puede apilar
+    | inRouteR route (destinationP palet) == False = False
+    | destinationP topPalet == destinationP palet = True 
+    | inOrderR route (destinationP palet) (destinationP topPalet) == True = True 
     | otherwise = False
 
 popS :: Stack -> String -> Stack          -- quita del tope los paletes con destino en la ciudad indicada
 popS (Sta [] capacity) city = Sta [] capacity
 popS (Sta (p:ps) capacity) city
-    | destinationP p == city = popS (Sta ps capacity) city -- si el destino del palet es la ciudad, se quita y se vuelve a llamar a popS para ver que no haya más
+    | destinationP p == city = popS (Sta ps capacity) city 
     | otherwise = Sta (p:ps) capacity 
+
