@@ -16,9 +16,9 @@ freeCellsS :: Stack -> Int                -- responde la celdas disponibles en l
 freeCellsS (Sta palets capacity) = capacity - length palets
 
 stackS :: Stack -> Palet -> Stack         -- apila el palet indicado en la pila
-stackS (Sta palets capacity) palet
-  | freeCellsS (Sta palets capacity) == 0 = error "La pila no tiene mas capacidad"
-  | netS (Sta palets capacity) + netP palet > 10 = error "Se superan las 10 toneladas"
+stackS (Sta palets capacity) palet 
+  | freeCellsS (Sta palets capacity) == 0 = Sta palets capacity
+  | netS (Sta palets capacity) + netP palet > 10 = Sta palets capacity
   | otherwise = Sta (palet:palets) capacity
 
 netS :: Stack -> Int                      -- responde el peso neto de los paletes en la pila

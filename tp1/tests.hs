@@ -49,7 +49,6 @@ tests_route = [
     inRouteR ruta_corta "Lisboa" == False
     ]
 
-
 tests_stack = [
         testF(newS 0),
         testF(newS (-1)),
@@ -57,7 +56,8 @@ tests_stack = [
         freeCellsS (stackS (newS 1) (newP "Madrid" 1)) == 0,
         netS (newS 1) == 0,
         netS (stackS (newS 1) (newP "Madrid" 1)) == 1,
-        testF(netS (stackS (stackS (newS 1) (newP "Madrid" 1)) (newP "Barcelona" 2))),
+        netS (stackS (stackS (newS 1) (newP "Madrid" 1)) (newP "Barcelona" 2)) == netS (stackS (newS 1) (newP "Madrid" 1)),
+        netS (stackS (stackS (newS 2) (newP "Madrid" 10)) (newP "Madrid" 2)) == netS (stackS (newS 1) (newP "Madrid" 10)),
         holdsS (newS 2) (newP "Madrid" 1) ruta_corta == True,
         holdsS (stackS (newS 2) (newP "Madrid" 1)) (newP "Barcelona" 2) ruta_corta == False,
         netS (popS (stackS (stackS (newS 2) (newP "Barcelona" 2)) (newP "Madrid" 1)) "Madrid") == netS (stackS (newS 2) (newP "Barcelona" 2)),
@@ -80,5 +80,4 @@ tests_truck = [
         netT (unloadT (loadT (newT 1 1 ruta_corta) (newP "Madrid" 1)) "Madrid") == 0,
         freeCellsT(loadT (newT 1 1 ruta_corta) (newP "Madrid" 11)) == 1,
         netT(loadT (loadT (loadT (loadT (loadT (newT 3 3 ruta_corta) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Barcelona" 7)) (newP "Londres" 1)) == netT(loadT (loadT (loadT (loadT (newT 3 3 ruta_corta) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Paris" 5)) (newP "Barcelona" 7))
-
     ]   
