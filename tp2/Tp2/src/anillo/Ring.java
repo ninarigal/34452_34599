@@ -24,8 +24,15 @@ public class Ring {
     }
 
     public Ring add( Object cargo ) {
-        cargas.add(cargo);
-        current = cargas.size() - 1;
+
+        if (cargas.isEmpty()) {
+            cargas.add(cargo);
+            current = 0;
+        } else {
+            int idx = current % cargas.size();
+            cargas.add(idx, cargo);
+            current = idx;
+        }
         return this;
     }
 
