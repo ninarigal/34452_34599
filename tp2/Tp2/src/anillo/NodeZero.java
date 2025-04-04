@@ -21,7 +21,10 @@ public class NodeZero extends Node {
 
     @Override
     public Node add(Object cargo){
-        return new NodeOne(cargo);
+        Node newNode = new Node(null, null, cargo);
+        newNode.next = newNode;
+        newNode.prev = newNode;
+        return newNode;
     }
 
     @Override

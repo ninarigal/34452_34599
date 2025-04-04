@@ -25,11 +25,14 @@ public class Node {
         Node newNode = new Node(this, this.prev, cargo);
         this.prev.next = newNode;
         this.prev = newNode;
-
         return newNode;
     }
 
     public Node remove() {
+
+        if (this.next == this){
+            return new NodeZero();
+        }
 
         this.prev.next = this.next;
         this.next.prev = this.prev;
