@@ -11,14 +11,12 @@ public class Node {
         this.data = data;
     }
 
-    public Node get_next() {
-        return next;
+    public Node get_next(Node current) {
+        return current.next;
     }
-    public Node get_prev() {
-        return prev;
-    }
-    public Object get_data() {
-        return data;
+    public Node get_prev(Node current) { return current.prev; }
+    public Object get_data(Node current) {
+        return current.data;
     }
 
     public Node add( Object cargo ) {
@@ -28,14 +26,10 @@ public class Node {
         return newNode;
     }
 
-    public Node remove() {
+    public Node remove( Node current) {
 
-        if (this.next == this){
-            return new NodeZero();
-        }
-
-        this.prev.next = this.next;
-        this.next.prev = this.prev;
-        return this.next;
+        current.prev.next = current.next;
+        current.next.prev = current.prev;
+        return current.next;
     }
 }

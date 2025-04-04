@@ -7,15 +7,15 @@ public class NodeZero extends Node {
     }
 
     @Override
-    public Node get_next() {
+    public Node get_next(Node current) {
         throw new RuntimeException();
     }
     @Override
-    public Node get_prev() {
+    public Node get_prev(Node current) {
         throw new RuntimeException();
     }
     @Override
-    public Object get_data() {
+    public Object get_data(Node current) {
         throw new RuntimeException();
     }
 
@@ -28,7 +28,7 @@ public class NodeZero extends Node {
     }
 
     @Override
-    public Node remove(){
+    public Node remove(Node current){
         throw new RuntimeException();
     }
 }
