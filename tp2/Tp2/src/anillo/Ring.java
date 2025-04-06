@@ -1,14 +1,10 @@
 package anillo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class Ring {
-
-
-    private Node current = new NodeZero();
-    private Stack<Node> links = new Stack<>(){{ push(current);}};
+    private Link current = new LinkZero();
+    private Stack<Link> links = new Stack<>(){{ push(current);}};
 
     public Ring next() {
         current = links.peek().get_next(current);
@@ -20,7 +16,6 @@ public class Ring {
     }
 
     public Ring add( Object cargo ) {
-
         current = current.add(cargo);
         links.push(current);
         return this;
