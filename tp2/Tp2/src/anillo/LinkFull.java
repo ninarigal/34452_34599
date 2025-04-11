@@ -5,28 +5,24 @@ public class LinkFull extends Link {
         super(next, prev, data);
     }
 
-    public Link get_next(Link current) {
-        return current.next;
+    public Link getNextFrom(Link current) {
+        return current.getNext();
     }
 
-    public Link get_prev(Link current) {
-        return current.prev;
-    }
-
-    public Object get_data(Link current) {
-        return current.data;
+    public Object getDataFrom(Link current) {
+        return current.getData();
     }
 
     public Link add( Object cargo ) {
-        LinkFull newNode = new LinkFull(this, this.prev, cargo);
-        this.prev.next = newNode;
-        this.prev = newNode;
+        LinkFull newNode = new LinkFull(this, this.getPrev(), cargo);
+        this.getPrev().setNext(newNode);
+        this.setPrev(newNode);
         return newNode;
     }
 
-    public Link remove( Link current) {
-        current.prev.next = current.next;
-        current.next.prev = current.prev;
-        return current.next;
+    public Link removeFrom( Link current) {
+        current.getPrev().setNext(current.getNext());
+        current.getNext().setPrev(current.getPrev());
+        return current.getNext();
     }
 }

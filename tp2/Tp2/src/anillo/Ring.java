@@ -7,12 +7,12 @@ public class Ring {
     private Stack<Link> links = new Stack<>(){{ push(current);}};
 
     public Ring next() {
-        current = links.peek().get_next(current);
+        current = links.peek().getNextFrom(current);
         return this;
     }
 
     public Object current() {
-        return links.peek().get_data(current);
+        return links.peek().getDataFrom(current);
     }
 
     public Ring add( Object cargo ) {
@@ -22,7 +22,7 @@ public class Ring {
     }
 
     public Ring remove() {
-        current = links.peek().remove(current);
+        current = links.peek().removeFrom(current);
         links.pop();
         return this;
     }

@@ -5,26 +5,22 @@ public class LinkZero extends Link {
         super(null, null, null);
     }
 
-    public Link get_next(Link current) {
+    public Link getNextFrom(Link current) {
         throw new RuntimeException();
     }
 
-    public Link get_prev(Link current) {
-        throw new RuntimeException();
-    }
-
-    public Object get_data(Link current) {
+    public Object getDataFrom(Link current) {
         throw new RuntimeException();
     }
 
     public Link add(Object cargo){
         LinkFull newNode = new LinkFull(null, null, cargo) {};
-        newNode.next = newNode;
-        newNode.prev = newNode;
+        newNode.setNext(newNode);
+        newNode.setPrev(newNode);
         return newNode;
     }
 
-    public Link remove(Link current){
+    public Link removeFrom(Link current){
         throw new RuntimeException();
     }
 }
