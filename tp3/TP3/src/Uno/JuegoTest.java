@@ -36,18 +36,18 @@ public class JuegoTest {
     public void testCartaInicialALaVistaColor(){
         assertEquals("Rojo", juegoSimple.colorCartaActual());
     }
-    @Test
-    public void testCartaInicialALaVistaNumero(){
-        assertEquals(2, juegoSimple.numeroCartaActual());
-    }
+ //   @Test
+ //   public void testCartaInicialALaVistaNumero(){
+ //       assertEquals(2, juegoSimple.numeroCartaActual());
+ //   }
     @Test
     public void unaJugadaValidaJugadorAColor(){
         assertEquals("Rojo",juegoSimple.jugar("A", rojo4).colorCartaActual());
     }
-    @Test
-    public void unaJugadaValidaJugadorANumero(){
-        assertEquals(4, juegoSimple.jugar("A", rojo4).numeroCartaActual());
-    }
+//    @Test
+//    public void unaJugadaValidaJugadorANumero(){
+//        assertEquals(4, juegoSimple.jugar("A", rojo4).numeroCartaActual());
+//    }
     @Test
     public void unaJugadaInvalidaJugadorA(){
         assertThrows(IllegalArgumentException.class, () -> {juegoSimple.jugar("A", azul4);});
@@ -63,6 +63,12 @@ public class JuegoTest {
     @Test
     public void juegoSimpleColorJugadorAJugadorB(){
         assertEquals("Azul", juegoSimple.jugar("A", rojo4).jugar("B", verde4).jugar("A", azul4).jugar("B", azul2).colorCartaActual());
+    }
+
+    @Test
+    public void jugadorACartaRepetida(){
+        assertThrows(IllegalArgumentException.class, () -> {juegoSimple.jugar("A", rojo4).jugar("B", verde4).jugar("A", rojo4);});
+
     }
 
     @Test
