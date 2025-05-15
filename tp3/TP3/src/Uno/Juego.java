@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Juego {
-    private Carta cartaActual;
+    private CartaColorida cartaActual;
     private List<String> jugadores;
     private int turnoActual;
     private Map<String, List<Carta>> manos;       // la mano de cada jugador
@@ -19,8 +19,15 @@ public class Juego {
         this.mazoRestante = new ArrayDeque<>(mazo);
         this.sentido = 1;
 
-        this.cartaActual = Optional.ofNullable(mazoRestante.pollFirst())
+        Carta primera = Optional.ofNullable(mazoRestante.pollFirst())
                 .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar elegir carta inicial"));
+
+        if (primera instanceof CartaColorida) {
+            this.cartaActual = (CartaColorida) primera;
+        } else {
+            throw new IllegalArgumentException("La primera carta no puede ser una WildCard");
+        }
+
 
         this.manos = this.jugadores.stream()
                 .collect(Collectors.toMap(
@@ -58,7 +65,7 @@ public class Juego {
         return jugadores.get(turnoActual);
     }
 
-    public Juego jugar(String jugador, Carta carta) {
+    public Juego jugar(String jugador, CartaColorida carta) {
 
 
         if (!jugadorEnTurno().equals(jugador)) {

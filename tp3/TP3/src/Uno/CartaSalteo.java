@@ -1,11 +1,11 @@
 package Uno;
 
-public class CartaSalteo extends Carta {
+public class CartaSalteo extends CartaColorida {
 
     public CartaSalteo(String color) {
         super(color);
     }
-    public boolean aceptaSobre(Carta actual) {
+    public boolean aceptaSobre(CartaColorida actual) {
         return (this.color.equals(actual.color()) || actual.tipo().equals(this.tipo()));
     }
 

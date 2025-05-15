@@ -1,6 +1,6 @@
 package Uno;
 
-public class CartaNumerada extends Carta {
+public class CartaNumerada extends CartaColorida {
     private int numero;
     public CartaNumerada(int num, String color) {
         super(color);
@@ -8,7 +8,7 @@ public class CartaNumerada extends Carta {
     }
     public int numero() {return this.numero;}
 
-    public boolean aceptaSobre(Carta actual) {
+    public boolean aceptaSobre(CartaColorida actual) {
         return (this.color.equals(actual.color()) || actual.tipo().equals(this.tipo()) && this.numero == ((CartaNumerada) actual).numero());
     }
 

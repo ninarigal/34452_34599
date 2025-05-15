@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class JuegoTest {
-    private Carta rojo2;
-    private Carta rojo4;
-    private Carta azul4;
-    private Carta verde4;
-    private Carta azul2;
+    private CartaColorida rojo2;
+    private CartaColorida rojo4;
+    private CartaColorida azul4;
+    private CartaColorida verde4;
+    private CartaColorida azul2;
     private List<Carta> mazoSimple;
     private Juego juegoSimple;
 

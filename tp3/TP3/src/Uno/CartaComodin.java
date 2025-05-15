@@ -1,4 +1,5 @@
 package Uno;
 
-public class CartaComodin {
+public class CartaComodin  {
+
 }
