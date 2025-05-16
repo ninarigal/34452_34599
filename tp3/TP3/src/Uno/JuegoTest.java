@@ -52,10 +52,12 @@ public class JuegoTest {
     public void unaJugadaInvalidaJugadorA(){
         assertThrows(IllegalArgumentException.class, () -> {juegoSimple.jugar("A", azul4);});
     }
+
     @Test
     public void unaCartaInvalidaJugadorA(){
         assertThrows(IllegalArgumentException.class, () -> {juegoSimple.jugar("A", verde4);});
     }
+
     @Test
     public void dosCartasValidasJugadorAJugadorB(){
         assertThrows(IllegalArgumentException.class, () -> {juegoSimple.jugar("A", azul4).jugar("B", azul2);});
@@ -68,13 +70,11 @@ public class JuegoTest {
     @Test
     public void jugadorACartaRepetida(){
         assertThrows(IllegalArgumentException.class, () -> {juegoSimple.jugar("A", rojo4).jugar("B", verde4).jugar("A", rojo4);});
-
     }
 
     @Test
     void testTurnoIncorrecto() {
-        assertThrows(IllegalStateException.class, () -> {
-            juegoSimple.jugar("B", azul2);
-        });
+        assertThrows(IllegalStateException.class, () -> {juegoSimple.jugar("B", azul2);});
     }
+
 }
