@@ -1,21 +1,46 @@
 package Uno;
 
-//public class CartaComodin  {
-//
-//    public void elegirColor(String colorElegido) {
-//    }
-//}
-
 public class CartaComodin extends Carta {
-    public TipoCarta tipo() {
-        return TipoCarta.WILD;
+    private String colorAsignado;
+    public CartaComodin() {
+        super(TipoCarta.WILD);
     }
 
-    public CartaColorida colorizar(String colorElegido) {
-        if (colorElegido == null || colorElegido.isEmpty()) {
-            throw new IllegalArgumentException("Debe elegirse un color válido para el comodín");
-        }
-        return new CartaComodinColorida(colorElegido);
+    public boolean teGustaColorDe(String color) {
+        return true;
+    }
+
+    public boolean teGustaNumeroDe(int numero) {
+        return false;
+    }
+
+    public boolean teGustaTipoDe(TipoCarta tipo) {
+        return true;
+    }
+
+    public CartaComodin comoRojo(){
+        this.colorAsignado = "Rojo";
+        return this;
+    }
+
+    public CartaComodin comoVerde(){
+        this.colorAsignado = "Verde";
+        return this;
+    }
+
+    public CartaComodin comoAzul(){
+        this.colorAsignado = "Azul";
+        return this;
+    }
+
+    public CartaComodin comoAmarillo(){
+        this.colorAsignado = "Amarillo";
+        return this;
+    }
+    public String color() {return this.colorAsignado;}
+
+    public boolean aceptaSobre(Carta nueva) {
+        return nueva.teGustaColorDe(this.colorAsignado) ;
     }
 }
 

@@ -1,20 +1,25 @@
 package Uno;
 
-public class CartaNumerada extends CartaColorida {
+public class CartaNumerada extends Carta {
     private int numero;
+    private String color;
     public CartaNumerada(int num, String color) {
-        super(color);
+        super(TipoCarta.NUMERADA);
+        this.color = color;
         this.numero = num;
     }
     public int numero() {return this.numero;}
-
-    public boolean aceptaSobre(CartaColorida actual) {
-        return (this.color.equals(actual.color()) || actual.tipo().equals(this.tipo()) && this.numero == ((CartaNumerada) actual).numero());
+    public String color() {return this.color;}
+    public boolean teGustaColorDe(String color) {
+        return this.color.equals(color);
     }
-
-    public TipoCarta tipo() {
-        return TipoCarta.NUMERADA;
+    public boolean teGustaNumeroDe(int numero) {
+        return this.numero == numero;
     }
-
-
+    public boolean teGustaTipoDe(TipoCarta tipo) {
+        return this.tipo().equals(tipo);
+    }
+    public boolean aceptaSobre(Carta nueva) {
+        return nueva.teGustaColorDe(this.color) || nueva.teGustaNumeroDe(this.numero);
+    }
 }

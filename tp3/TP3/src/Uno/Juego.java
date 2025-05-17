@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Juego {
-    private CartaColorida cartaActual;
+    private Carta cartaActual;
     private List<String> jugadores;
     private int turnoActual;
     private Map<String, List<Carta>> manos;
@@ -21,11 +21,8 @@ public class Juego {
 
         Carta primera = Optional.ofNullable(mazoRestante.pollFirst())
                 .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar elegir carta inicial"));
-        if (primera instanceof CartaColorida) {
-            this.cartaActual = (CartaColorida) primera;
-        } else {
-            throw new IllegalArgumentException("La primera carta no puede ser un comodín");
-        }
+
+        this.cartaActual = primera;
 
         this.manos = this.jugadores.stream()
                 .collect(Collectors.toMap(
@@ -79,10 +76,7 @@ public class Juego {
         return this;
     }
 
-    public Juego jugar(String jugador, CartaColorida carta) {
-        if (carta.tipo() == TipoCarta.WILD) {
-            throw new IllegalArgumentException("Para jugar un comodín, usá el método jugar(String, CartaComodin, String)");
-        }
+    public Juego jugar(String jugador, Carta carta) {
         if (!jugadorEnTurno().equals(jugador)) {
             throw new IllegalStateException("No es el turno de " + jugador);
         }
@@ -90,7 +84,7 @@ public class Juego {
         if (!mano.contains(carta)) {
             throw new IllegalArgumentException("No tenés esa carta en la mano");
         }
-        if (!carta.aceptaSobre(cartaActual)) {
+        if (!cartaActual.aceptaSobre(carta)) {
             throw new IllegalArgumentException("La carta no es válida");
         }
         mano.remove(carta);
@@ -121,23 +115,8 @@ public class Juego {
         return this;
     }
 
-    public Juego jugar(String jugador, CartaComodin comodin, String colorElegido) {
-        if (!jugadorEnTurno().equals(jugador)) {
-            throw new IllegalStateException("No es el turno de " + jugador);
-        }
-        List<Carta> mano = manos.get(jugador);
-        if (!mano.contains(comodin)) {
-            throw new IllegalArgumentException("No tenés esa carta en la mano");
-        }
-        mano.remove(comodin);
-        CartaColorida cartaColorizada = comodin.colorizar(colorElegido);
-        cartaActual = cartaColorizada;
-        yaRoboEnEsteTurno = false;
-        turnoActual = siguienteTurno();
-        return this;
-    }
 
     private int siguienteTurno() {
-        return ((turnoActual + this.sentido) % jugadores.size());
+        return Math.floorMod(turnoActual + sentido, jugadores.size());
     }
 }

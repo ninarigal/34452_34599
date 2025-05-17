@@ -1,16 +1,9 @@
 package Uno;
 
-public class CartaReversa extends CartaColorida {
+public class CartaReversa extends CartaDeAccion {
 
     public CartaReversa(String color) {
-        super(color);
+        super(color, TipoCarta.REVERSE);
     }
 
-    public boolean aceptaSobre(CartaColorida actual) {
-        return (this.color.equals(actual.color()) || actual.tipo().equals(this.tipo()));
-    }
-
-    public TipoCarta tipo() {
-        return TipoCarta.REVERSE;
-    }
 }

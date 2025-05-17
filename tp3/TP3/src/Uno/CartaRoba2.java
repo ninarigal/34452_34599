@@ -1,16 +1,8 @@
 package Uno;
 
-public class CartaRoba2 extends CartaColorida {
+public class CartaRoba2 extends CartaDeAccion{
 
     public CartaRoba2(String color) {
-        super(color);
-    }
-
-    public boolean aceptaSobre(CartaColorida actual) {
-        return (this.color.equals(actual.color()) || actual.tipo().equals(this.tipo()));
-    }
-
-    public TipoCarta tipo() {
-        return TipoCarta.DRAW_TWO;
+        super(color, TipoCarta.DRAW_TWO);
     }
 }

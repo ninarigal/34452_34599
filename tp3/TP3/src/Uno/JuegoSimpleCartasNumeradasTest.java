@@ -2,9 +2,6 @@ package Uno;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.smartcardio.Card;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class JuegoTest {
-    private CartaColorida rojo2;
-    private CartaColorida rojo4;
-    private CartaColorida azul4;
-    private CartaColorida verde4;
-    private CartaColorida azul2;
+public class JuegoSimpleCartasNumeradasTest {
+    private Carta rojo2;
+    private Carta rojo4;
+    private Carta azul4;
+    private Carta verde4;
+    private Carta  azul2;
     private List<Carta> mazoSimple;
     private Juego juegoSimple;
 
