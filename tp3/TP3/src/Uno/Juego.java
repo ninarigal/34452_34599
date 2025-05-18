@@ -12,12 +12,16 @@ public class Juego {
     private Map<String, List<Carta>> manos;
     private Deque<Carta> mazoRestante;
     private int sentido;
-    private boolean yaRoboEnEsteTurno = false;
+    private boolean yaRoboEnEsteTurno;
+    private boolean juegoTerminado;
+    private String ganador;
 
     public Juego(List<Carta> mazo, int cartasPorJugador, String... jugadores) {
         this.jugadores = Arrays.asList(jugadores);
         this.mazoRestante = new ArrayDeque<>(mazo);
         this.sentido = 1;
+        this.juegoTerminado = false;
+        this.yaRoboEnEsteTurno = false;
 
         Carta primera = Optional.ofNullable(mazoRestante.pollFirst())
                 .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar elegir carta inicial"));
@@ -54,6 +58,7 @@ public class Juego {
     }
 
     public Juego tomar(String jugador) {
+        if (juegoTerminado) { throw new IllegalStateException("Jugador terminado"); }
         if (!jugadorEnTurno().equals(jugador)) {
             throw new IllegalStateException("No es el turno de " + jugador);
         }
@@ -77,6 +82,8 @@ public class Juego {
     }
 
     public Juego jugar(String jugador, Carta carta) {
+
+        if (juegoTerminado) { throw new IllegalStateException("Jugador terminado"); }
         if (!jugadorEnTurno().equals(jugador)) {
             throw new IllegalStateException("No es el turno de " + jugador);
         }
@@ -88,6 +95,11 @@ public class Juego {
             throw new IllegalArgumentException("La carta no es válida");
         }
         mano.remove(carta);
+        if (mano.isEmpty()) {
+            juegoTerminado = true;
+            ganador = jugador;
+            return this;
+        }
         cartaActual = carta;
         yaRoboEnEsteTurno = false;
 
@@ -120,4 +132,11 @@ public class Juego {
         siguienteTurno();
         siguienteTurno();
     }
+
+    public String ganador(){
+        if (!juegoTerminado) { throw new IllegalStateException("El juego no termino"); }
+        else return ganador;
+    }
+
+
 }

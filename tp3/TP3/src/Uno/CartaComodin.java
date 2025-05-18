@@ -2,9 +2,6 @@ package Uno;
 
 public class CartaComodin extends Carta {
     private String colorAsignado;
-    public CartaComodin() {
-        super(TipoCarta.WILD);
-    }
 
     public boolean teGustaColorDe(String color) {
         return true;
@@ -14,7 +11,7 @@ public class CartaComodin extends Carta {
         return false;
     }
 
-    public boolean teGustaTipoDe(TipoCarta tipo) {
+    public boolean teGustaTipoDe(Carta carta) {
         return true;
     }
 

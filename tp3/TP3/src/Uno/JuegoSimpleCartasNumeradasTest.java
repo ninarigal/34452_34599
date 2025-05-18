@@ -61,7 +61,7 @@ public class JuegoSimpleCartasNumeradasTest {
     }
     @Test
     public void juegoSimpleColorJugadorAJugadorB(){
-        assertEquals("Azul", juegoSimple.jugar("A", rojo4).jugar("B", verde4).jugar("A", azul4).jugar("B", azul2).colorCartaActual());
+        assertEquals("Verde", juegoSimple.jugar("A", rojo4).jugar("B", verde4).colorCartaActual());
     }
 
     @Test

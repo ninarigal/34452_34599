@@ -3,11 +3,14 @@ package Uno;
 public class CartaReversa extends CartaDeAccion {
 
     public CartaReversa(String color) {
-        super(color, TipoCarta.REVERSE);
+        super(color);
     }
     public void aplicarEfecto(Juego juego) {
         juego.cambiarSentido();  // invierto el sentido
         juego.siguienteTurno();          // paso al jugador que ahora corresponde
+    }
+    public boolean teGustaTipoDe(Carta carta){
+        return carta instanceof CartaReversa;
     }
 
 }
