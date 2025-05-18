@@ -11,4 +11,5 @@ public abstract class Carta {
     public abstract boolean teGustaTipoDe(TipoCarta tipo);
     public abstract boolean aceptaSobre(Carta actual);
     public abstract String color();
+    public abstract void aplicarEfecto(Juego juego);
 }

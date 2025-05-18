@@ -71,7 +71,7 @@ public class Juego {
         if (!yaRoboEnEsteTurno) {
             throw new IllegalStateException("Solo podés pasar el turno después de robar");
         }
-        turnoActual = siguienteTurno();
+        turnoActual = turnoActual();
         yaRoboEnEsteTurno = false;
         return this;
     }
@@ -91,33 +91,33 @@ public class Juego {
         cartaActual = carta;
         yaRoboEnEsteTurno = false;
 
-        switch (carta.tipo()) {
-            case REVERSE:
-                sentido *= -1;
-                turnoActual = siguienteTurno();
-                break;
-            case SKIP:
-                turnoActual = siguienteTurno();
-                turnoActual = siguienteTurno();
-                break;
-            case DRAW_TWO:
-                int siguiente = siguienteTurno();
-                for (int i = 0; i < 2; i++) {
-                    Carta robada = Optional.ofNullable(mazoRestante.pollFirst())
-                            .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar robar"));
-                    manos.get(jugadores.get(siguiente)).add(robada);
-                }
-                turnoActual = siguienteTurno();
-                turnoActual = siguienteTurno();
-                break;
-            default:
-                turnoActual = siguienteTurno();
-        }
+        carta.aplicarEfecto(this);
         return this;
+
     }
 
+    public void siguienteTurno() {
+        turnoActual = Math.floorMod(turnoActual + sentido, jugadores.size());
+    }
 
-    private int siguienteTurno() {
+    public int turnoActual() {
         return Math.floorMod(turnoActual + sentido, jugadores.size());
+    }
+
+    public void cambiarSentido() {
+        sentido *= -1;
+    }
+
+    public void robar2Cartas(int idx) {
+        for (int i = 0; i < 2; i++) {
+            Carta c = Optional.ofNullable(mazoRestante.pollFirst())
+                    .orElseThrow(() -> new IllegalArgumentException("Mazo vacío"));
+            manos.get(jugadores.get(idx)).add(c);
+        }
+    }
+
+    public void perderTurno() {
+        siguienteTurno();
+        siguienteTurno();
     }
 }

@@ -10,6 +10,8 @@ public class CartaNumerada extends Carta {
     }
     public int numero() {return this.numero;}
     public String color() {return this.color;}
+    public void aplicarEfecto(Juego juego) { juego.siguienteTurno();}
+
     public boolean teGustaColorDe(String color) {
         return this.color.equals(color);
     }
@@ -22,4 +24,5 @@ public class CartaNumerada extends Carta {
     public boolean aceptaSobre(Carta nueva) {
         return nueva.teGustaColorDe(this.color) || nueva.teGustaNumeroDe(this.numero);
     }
+
 }

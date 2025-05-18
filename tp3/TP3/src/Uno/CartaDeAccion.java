@@ -1,6 +1,6 @@
 package Uno;
 
-public class CartaDeAccion extends Carta {
+public abstract class CartaDeAccion extends Carta {
     protected String color;
     public CartaDeAccion(String color, TipoCarta tipo) {
         super(tipo);
