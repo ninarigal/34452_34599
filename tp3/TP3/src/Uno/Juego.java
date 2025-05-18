@@ -108,6 +108,7 @@ public class Juego {
                     manos.get(jugadores.get(siguiente)).add(robada);
                 }
                 turnoActual = siguienteTurno();
+                turnoActual = siguienteTurno();
                 break;
             default:
                 turnoActual = siguienteTurno();
