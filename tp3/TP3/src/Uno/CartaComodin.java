@@ -36,9 +36,7 @@ public class CartaComodin extends Carta {
     }
     public String color() {return this.colorAsignado;}
 
-    public void aplicarEfecto(Juego juego) {
-        juego.siguienteTurno();
-    }
+    public void aplicarEfecto(Juego juego) {}
 
     public boolean aceptaSobre(Carta nueva) {
         return nueva.teGustaColorDe(this.colorAsignado) ;

@@ -42,8 +42,14 @@ public class JuegoSimpleTodasLasCartasTest {
     private CartaComodin comodin5;
 
     private List<Carta> mazoSimple;
+    private List<Carta> mazoEmpiezaRoba2;
+    private List<Carta> mazoEmpiezaReversa;
+    private List<Carta> mazoEmpiezaSalteo;
     private Juego juego;
     private Juego juegoSimple;
+    private Juego juegoEmpiezaRoba2;
+    private Juego juegoEmpiezaReversa;
+    private Juego juegoEmpiezaSalteo;
 
     @BeforeEach
     public void setUp() {
@@ -84,8 +90,15 @@ public class JuegoSimpleTodasLasCartasTest {
                 verde4, rojo4, azulRoba2, amarilloSalteo, verde7, verdeSalteo, comodin3,  // B
                 comodin, verdeRoba2, rojo3, azulReversa, azul7, amarilloRoba2, comodin5, // C
                 verde2, amarillo4, rojo5, comodin4, amarilloReversa, verde3); // mazo
+        mazoEmpiezaRoba2 = List.of(azulRoba2, azul2, rojo5, azul4,  comodin4, azul7,  amarilloReversa, verdeSalteo, comodin2 );
+        mazoEmpiezaSalteo = List.of(azulSalteo, azul2, rojo5, azul4,  comodin4, azul7,  amarilloReversa, verdeSalteo, comodin2 );
+        mazoEmpiezaReversa = List.of(azulReversa, azul2, rojo5, azul4,  comodin4, azul7,  amarilloReversa, verdeSalteo, comodin2 );
+
         juego = new Juego(mazoSimple, 7, "A", "B", "C");
         juegoSimple = new Juego(mazoSimple, 1, "A", "B", "C");
+        juegoEmpiezaRoba2 = new Juego(mazoEmpiezaRoba2, 2, "A", "B", "C");
+        juegoEmpiezaReversa = new Juego(mazoEmpiezaReversa, 2, "A", "B", "C");
+        juegoEmpiezaSalteo = new Juego(mazoEmpiezaSalteo, 2, "A", "B", "C");
     }
 
     //Reversa
@@ -309,6 +322,48 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("B", verdeSalteo)
                         .jugar("A", verde3));
     }
+
+
+
+    @Test
+    public void turnoIncorrectoJuegoEmpiezaRoba2(){
+        assertThrows( IllegalStateException.class, () -> juegoEmpiezaRoba2.jugar("A", azul2));
+
+    }
+
+    @Test
+    public void turnoCorrectoJuegoEmpiezaRoba2(){
+        assertEquals("Azul", juegoEmpiezaRoba2.jugar("B", azul4).colorCartaActual());
+
+    }
+
+
+    @Test
+    public void turnoIncorrectoJuegoEmpiezaSalteo(){
+        assertThrows( IllegalStateException.class, () -> juegoEmpiezaSalteo.jugar("A", azul2));
+
+    }
+
+    @Test
+    public void turnoCorrectoJuegoEmpiezaSalteo(){
+        assertEquals("Azul", juegoEmpiezaSalteo.jugar("B", azul4).colorCartaActual());
+
+    }
+
+    @Test
+    public void turnoIncorrectoJuegoEmpiezaReversa(){
+        assertThrows( IllegalStateException.class, () -> juegoEmpiezaReversa.jugar("A", azul2).jugar("B", azul4));
+
+    }
+
+    @Test
+    public void turnoCorrectoJuegoEmpiezaReversa(){
+        assertEquals("Azul", juegoEmpiezaReversa.jugar("A", azul2).jugar("C", azul7).colorCartaActual());
+
+    }
+
+
+
 
 }
 

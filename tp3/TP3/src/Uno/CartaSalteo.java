@@ -6,7 +6,7 @@ public class CartaSalteo extends CartaDeAccion {
         super(color);
     }
     public void aplicarEfecto(Juego juego) {
-        juego.perderTurno(); // saltea al siguiente
+        juego.siguienteTurno();
     }
 
     public boolean teGustaTipoDe(Carta carta){

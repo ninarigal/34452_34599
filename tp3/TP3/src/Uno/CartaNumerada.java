@@ -8,7 +8,7 @@ public class CartaNumerada extends Carta {
         this.numero = num;
     }
     public String color() {return this.color;}
-    public void aplicarEfecto(Juego juego) { juego.siguienteTurno();}
+    public void aplicarEfecto(Juego juego) { }
 
     public boolean teGustaColorDe(String color) {
         return this.color.equals(color);

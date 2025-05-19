@@ -23,10 +23,8 @@ public class Juego {
         this.juegoTerminado = false;
         this.yaRoboEnEsteTurno = false;
 
-        Carta primera = Optional.ofNullable(mazoRestante.pollFirst())
+        this.cartaActual  = Optional.ofNullable(mazoRestante.pollFirst())
                 .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar elegir carta inicial"));
-
-        this.cartaActual = primera;
 
         this.manos = this.jugadores.stream()
                 .collect(Collectors.toMap(
@@ -37,6 +35,8 @@ public class Juego {
                                 .collect(Collectors.toList())
                 ));
         this.turnoActual = 0;
+
+        this.cartaActual.aplicarEfecto(this);
     }
 
     public List<Carta> getMano(String jugador) {
@@ -104,6 +104,7 @@ public class Juego {
         yaRoboEnEsteTurno = false;
 
         carta.aplicarEfecto(this);
+        siguienteTurno();
         return this;
 
     }
@@ -128,10 +129,6 @@ public class Juego {
         }
     }
 
-    public void perderTurno() {
-        siguienteTurno();
-        siguienteTurno();
-    }
 
     public String ganador(){
         if (!juegoTerminado) { throw new IllegalStateException("El juego no termino"); }

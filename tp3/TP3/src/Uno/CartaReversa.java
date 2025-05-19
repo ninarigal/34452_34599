@@ -6,8 +6,7 @@ public class CartaReversa extends CartaDeAccion {
         super(color);
     }
     public void aplicarEfecto(Juego juego) {
-        juego.cambiarSentido();  // invierto el sentido
-        juego.siguienteTurno();          // paso al jugador que ahora corresponde
+        juego.cambiarSentido();
     }
     public boolean teGustaTipoDe(Carta carta){
         return carta instanceof CartaReversa;
