@@ -36,10 +36,7 @@ public class JuegoSimpleTodasLasCartasTest {
 
 
     private CartaComodin comodin;
-    private CartaComodin comodin2;
-    private CartaComodin comodin3;
-    private CartaComodin comodin4;
-    private CartaComodin comodin5;
+
 
     private List<Carta> mazoSimple;
     private List<Carta> mazoEmpiezaRoba2;

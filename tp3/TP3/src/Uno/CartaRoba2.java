@@ -9,7 +9,7 @@ public class CartaRoba2 extends CartaDeAccion{
         return new CartaRoba2(color);
     }
     public void aplicarEfecto(Juego juego) {
-        juego.robar2Cartas(juego.turnoActual());
         juego.siguienteTurno();
+        juego.robar2Cartas(juego.getTurnoActual());
     }
 }
