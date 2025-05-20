@@ -1,15 +1,13 @@
 package Uno;
 
+
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 public class Juego {
     private Carta cartaActual;
-    private List<String> jugadores;
+    private List<Jugador> jugadores;
     private int turnoActual;
-    private Map<String, List<Carta>> manos;
     private Deque<Carta> mazoRestante;
     private int sentido;
     private boolean yaRoboEnEsteTurno;
@@ -17,7 +15,7 @@ public class Juego {
     private String ganador;
 
     public Juego(List<Carta> mazo, int cartasPorJugador, String... jugadores) {
-        this.jugadores = Arrays.asList(jugadores);
+
         this.mazoRestante = new ArrayDeque<>(mazo);
         this.sentido = 1;
         this.juegoTerminado = false;
@@ -26,35 +24,34 @@ public class Juego {
         this.cartaActual  = Optional.ofNullable(mazoRestante.pollFirst())
                 .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar elegir carta inicial"));
 
-        this.manos = this.jugadores.stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        jugador -> IntStream.range(0, cartasPorJugador)
-                                .mapToObj(i -> Optional.ofNullable(mazoRestante.pollFirst())
-                                        .orElseThrow(() -> new IllegalArgumentException("Mazo sin suficientes cartas para repartir")))
-                                .collect(Collectors.toList())
-                ));
+        this.jugadores = new ArrayList<>();
+        for (String nombre : jugadores) {
+            List<Carta> mano = new ArrayList<>();
+            for (int i = 0; i < cartasPorJugador; i++) {
+                mano.add(Optional.ofNullable(mazoRestante.pollFirst())
+                        .orElseThrow(() -> new IllegalArgumentException("Mazo sin suficientes cartas para repartir")));
+            }
+            this.jugadores.add(new Jugador(nombre, mano));
+        }
         this.turnoActual = 0;
 
         this.cartaActual.aplicarEfecto(this);
     }
 
-    public List<Carta> getMano(String jugador) {
-        List<Carta> mano = manos.get(jugador);
-        if (mano == null) throw new IllegalArgumentException("Jugador desconocido: " + jugador);
-        return Collections.unmodifiableList(mano);
+    private Jugador getJugador(String nombre) {
+        return jugadores.stream()
+                .filter(j -> j.getNombre().equals(nombre))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Jugador desconocido: " + nombre));
     }
 
-    public int cartasRestantesEnMazo() {
-        return mazoRestante.size();
-    }
 
     public String colorCartaActual() {
         return cartaActual.color();
     }
 
     public String jugadorEnTurno() {
-        return jugadores.get(turnoActual);
+        return jugadores.get(turnoActual).getNombre();
     }
 
     public Juego tomar(String jugador) {
@@ -64,10 +61,11 @@ public class Juego {
         }
         Carta cartaTomada = Optional.ofNullable(mazoRestante.pollFirst())
                 .orElseThrow(() -> new IllegalArgumentException("Mazo vacío al intentar tomar carta del mazo"));
-        manos.get(jugador).add(cartaTomada);
+        getJugador(jugador).getMano().add(cartaTomada);
         yaRoboEnEsteTurno = true;
         return this;
     }
+
 
     public Juego pasarTurno(String jugador) {
         if (!jugadorEnTurno().equals(jugador)) {
@@ -81,36 +79,34 @@ public class Juego {
         return this;
     }
 
-    public Juego jugar(String jugador, Carta carta) {
-
-        if (juegoTerminado) { throw new IllegalStateException("Jugador terminado"); }
-        if (!jugadorEnTurno().equals(jugador)) {
-            throw new IllegalStateException("No es el turno de " + jugador);
-        }
-        List<Carta> mano = manos.get(jugador);
-        if (!mano.contains(carta)) {
+    public Juego jugar(String nombreJugador, Carta carta) {
+        if (juegoTerminado) throw new IllegalStateException("Jugador terminado");
+        if (!jugadorEnTurno().equals(nombreJugador))
+            throw new IllegalStateException("No es el turno de " + nombreJugador);
+        Jugador jugador = getJugador(nombreJugador);
+        List<Carta> mano = jugador.getMano();
+        if (!mano.contains(carta))
             throw new IllegalArgumentException("No tenés esa carta en la mano");
-        }
-        if (!cartaActual.aceptaSobre(carta)) {
+        if (!cartaActual.aceptaSobre(carta))
             throw new IllegalArgumentException("La carta no es válida");
-        }
+
         mano.remove(carta);
         if (mano.isEmpty()) {
             juegoTerminado = true;
-            ganador = jugador;
+            ganador = nombreJugador;
             return this;
         }
+
         cartaActual = carta;
         yaRoboEnEsteTurno = false;
 
         carta.aplicarEfecto(this);
         siguienteTurno();
         return this;
-
     }
 
     public void siguienteTurno() {
-        turnoActual = Math.floorMod(turnoActual + sentido, jugadores.size());
+        turnoActual = turnoActual();
     }
 
     public int turnoActual() {
@@ -122,10 +118,11 @@ public class Juego {
     }
 
     public void robar2Cartas(int idx) {
+        Jugador jugador = jugadores.get(idx);
         for (int i = 0; i < 2; i++) {
             Carta c = Optional.ofNullable(mazoRestante.pollFirst())
                     .orElseThrow(() -> new IllegalArgumentException("Mazo vacío"));
-            manos.get(jugadores.get(idx)).add(c);
+            jugador.getMano().add(c);
         }
     }
 

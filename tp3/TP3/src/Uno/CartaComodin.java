@@ -52,9 +52,6 @@ public class CartaComodin extends Carta {
         return obj instanceof CartaComodin;
     }
 
-    public int hashCode() {
-        return 1;
-    }
 
 
 }
