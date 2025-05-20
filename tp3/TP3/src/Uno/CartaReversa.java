@@ -8,8 +8,4 @@ public class CartaReversa extends CartaDeAccion {
     public void aplicarEfecto(Juego juego) {
         juego.cambiarSentido();
     }
-    public boolean teGustaTipoDe(Carta carta){
-        return carta instanceof CartaReversa;
-    }
-
 }

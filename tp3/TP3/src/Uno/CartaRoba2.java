@@ -9,7 +9,4 @@ public class CartaRoba2 extends CartaDeAccion{
         juego.robar2Cartas(juego.turnoActual());
         juego.siguienteTurno();
     }
-    public boolean teGustaTipoDe(Carta carta){
-        return carta instanceof CartaRoba2;
-    }
 }

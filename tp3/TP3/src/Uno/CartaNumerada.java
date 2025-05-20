@@ -17,9 +17,6 @@ public class CartaNumerada extends Carta {
         return this.numero == numero;
     }
 
-    public boolean teGustaTipoDe(Carta carta) {
-        return carta instanceof CartaNumerada;
-    }
     public boolean aceptaSobre(Carta nueva) {
         return nueva.teGustaColorDe(this.color) || nueva.teGustaNumeroDe(this.numero);
     }

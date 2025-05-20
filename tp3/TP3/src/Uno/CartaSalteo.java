@@ -9,7 +9,4 @@ public class CartaSalteo extends CartaDeAccion {
         juego.siguienteTurno();
     }
 
-    public boolean teGustaTipoDe(Carta carta){
-        return carta instanceof CartaSalteo;
-    }
 }
