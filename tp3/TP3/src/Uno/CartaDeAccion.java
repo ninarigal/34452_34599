@@ -1,5 +1,7 @@
 package Uno;
 
+import java.util.Objects;
+
 public abstract class CartaDeAccion extends Carta {
     protected String color;
     public CartaDeAccion(String color) {
@@ -15,5 +17,17 @@ public abstract class CartaDeAccion extends Carta {
 
     public boolean aceptaSobre(Carta nueva){
         return nueva.teGustaColorDe(this.color) || nueva.teGustaTipoDe(this);
+    }
+
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        CartaDeAccion otra = (CartaDeAccion) obj;
+        return Objects.equals(this.color, otra.color);
+    }
+
+    public int hashCode() {
+        return Objects.hash(color);
     }
 }

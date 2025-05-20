@@ -1,7 +1,12 @@
 package Uno;
 
+import java.util.Objects;
+
 public class CartaComodin extends Carta {
     private String colorAsignado;
+
+    private CartaComodin(){}
+    public static CartaComodin with(){return new CartaComodin();}
 
     public boolean teGustaColorDe(String color) {
         return true;
@@ -41,5 +46,16 @@ public class CartaComodin extends Carta {
     public boolean aceptaSobre(Carta nueva) {
         return nueva.teGustaColorDe(this.colorAsignado) ;
     }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        return obj instanceof CartaComodin;
+    }
+
+    public int hashCode() {
+        return 1;
+    }
+
+
 }
 

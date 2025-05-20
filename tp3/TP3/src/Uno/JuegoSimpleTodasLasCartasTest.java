@@ -53,46 +53,43 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @BeforeEach
     public void setUp() {
-        rojo2 = new CartaNumerada(2, "Rojo");
-        rojo3 = new CartaNumerada(3, "Rojo");
-        rojo4 = new CartaNumerada(4, "Rojo");
-        rojo5 = new CartaNumerada(5, "Rojo");
-        verde2 = new CartaNumerada(2, "Verde");
-        verde3 = new CartaNumerada(3, "Verde");
-        verde7 = new CartaNumerada(7, "Verde");
-        verde4 = new CartaNumerada(4, "Verde");
-        azul2 = new CartaNumerada(2, "Azul");
-        azul7 = new CartaNumerada(7, "Azul");
-        azul4 = new CartaNumerada(4, "Azul");
-        amarillo2 = new CartaNumerada(2, "Amarillo");
-        amarillo3 = new CartaNumerada(3, "Amarillo");
-        amarillo4 = new CartaNumerada(4, "Amarillo");
+        rojo2 = CartaNumerada.with(2, "Rojo");
+        rojo3 = CartaNumerada.with(3, "Rojo");
+        rojo4 = CartaNumerada.with(4, "Rojo");
+        rojo5 = CartaNumerada.with(5, "Rojo");
+        verde2 = CartaNumerada.with(2, "Verde");
+        verde3 = CartaNumerada.with(3, "Verde");
+        verde7 = CartaNumerada.with(7, "Verde");
+        verde4 = CartaNumerada.with(4, "Verde");
+        azul2 = CartaNumerada.with(2, "Azul");
+        azul7 = CartaNumerada.with(7, "Azul");
+        azul4 = CartaNumerada.with(4, "Azul");
+        amarillo2 = CartaNumerada.with(2, "Amarillo");
+        amarillo3 = CartaNumerada.with(3, "Amarillo");
+        amarillo4 = CartaNumerada.with(4, "Amarillo");
 
-        rojoReversa = new CartaReversa("Rojo");
-        azulReversa = new CartaReversa("Azul");
-        amarilloReversa = new CartaReversa("Amarillo");
-        azulSalteo = new CartaSalteo("Azul");
-        amarilloSalteo = new CartaSalteo("Amarillo");
-        verdeSalteo = new CartaSalteo("Verde");
-        verdeRoba2 = new CartaRoba2("Verde");
-        amarilloRoba2 = new CartaRoba2("Amarillo");
-        azulRoba2 = new CartaRoba2("Azul");
+        rojoReversa = CartaReversa.with("Rojo");
+        azulReversa = CartaReversa.with("Azul");
+        amarilloReversa = CartaReversa.with("Amarillo");
+        azulSalteo = CartaSalteo.with("Azul");
+        amarilloSalteo = CartaSalteo.with("Amarillo");
+        verdeSalteo = CartaSalteo.with("Verde");
+        verdeRoba2 = CartaRoba2.with("Verde");
+        amarilloRoba2 = CartaRoba2.with("Amarillo");
+        azulRoba2 = CartaRoba2.with("Azul");
 
-        comodin = new CartaComodin();
-        comodin2 = new CartaComodin();
-        comodin3 = new CartaComodin();
-        comodin4 = new CartaComodin();
-        comodin5 = new CartaComodin();
+        comodin = CartaComodin.with();
+
 
 
         mazoSimple = List.of(rojo2, // inicial
-                azul4, azulSalteo, rojoReversa, amarillo2, amarillo3, comodin2, azul2, // A
-                verde4, rojo4, azulRoba2, amarilloSalteo, verde7, verdeSalteo, comodin3,  // B
-                comodin, verdeRoba2, rojo3, azulReversa, azul7, amarilloRoba2, comodin5, // C
-                verde2, amarillo4, rojo5, comodin4, amarilloReversa, verde3); // mazo
-        mazoEmpiezaRoba2 = List.of(azulRoba2, azul2, rojo5, azul4,  comodin4, azul7,  amarilloReversa, verdeSalteo, comodin2 );
-        mazoEmpiezaSalteo = List.of(azulSalteo, azul2, rojo5, azul4,  comodin4, azul7,  amarilloReversa, verdeSalteo, comodin2 );
-        mazoEmpiezaReversa = List.of(azulReversa, azul2, rojo5, azul4,  comodin4, azul7,  amarilloReversa, verdeSalteo, comodin2 );
+                azul4, azulSalteo, rojoReversa, amarillo2, amarillo3, comodin, azul2, // A
+                verde4, rojo4, azulRoba2, amarilloSalteo, verde7, verdeSalteo, comodin,  // B
+                comodin, verdeRoba2, rojo3, azulReversa, azul7, amarilloRoba2, comodin, // C
+                verde2, amarillo4, rojo5, comodin, amarilloReversa, verde3); // mazo
+        mazoEmpiezaRoba2 = List.of(azulRoba2, azul2, rojo5, azul4,  comodin, azul7,  amarilloReversa, verdeSalteo, comodin );
+        mazoEmpiezaSalteo = List.of(azulSalteo, azul2, rojo5, azul4,  comodin, azul7,  amarilloReversa, verdeSalteo, comodin );
+        mazoEmpiezaReversa = List.of(azulReversa, azul2, rojo5, azul4,  comodin, azul7,  amarilloReversa, verdeSalteo, comodin );
 
         juego = new Juego(mazoSimple, 7, "A", "B", "C");
         juegoSimple = new Juego(mazoSimple, 1, "A", "B", "C");
@@ -149,7 +146,7 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void salteoAceptaComodin() {
-        assertEquals("Rojo", juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", comodin2.comoRojo()).jugar("B", rojo4).colorCartaActual());
+        assertEquals("Rojo", juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", comodin.comoRojo()).jugar("B", rojo4).colorCartaActual());
     }
 
     @Test
@@ -160,62 +157,62 @@ public class JuegoSimpleTodasLasCartasTest {
     @Test
     public void salteoColorIncorrecto() {
         assertThrows(IllegalArgumentException.class, () -> {
-            juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", comodin2.comoVerde()).jugar("B", verdeSalteo).jugar("A", azul4);
+            juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", comodin.comoVerde()).jugar("B", verdeSalteo).jugar("A", azul4);
         });
     }
 
     //Roba2
     @Test
     public void turnosConRoba2Correcto() {
-        assertEquals("Verde", juego.jugar("A", comodin2.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verdeSalteo).colorCartaActual());
+        assertEquals("Verde", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verdeSalteo).colorCartaActual());
     }
 
     @Test
     public void turnosConRoba2Incorrecto() {
         assertThrows(IllegalStateException.class, () -> {
-            juego.jugar("A", comodin2.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("A", verde2);
+            juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("A", verde2);
         });
     }
 
     @Test
     public void Roba2AceptaComodin() {
-        assertEquals("Rojo", juego.jugar("A", comodin2.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", comodin3.comoRojo()).jugar("C", rojo3).colorCartaActual());
+        assertEquals("Rojo", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", comodin.comoRojo()).jugar("C", rojo3).colorCartaActual());
     }
 
     @Test
     public void Roba2AceptaRoba2() {
-        assertEquals("Azul", juego.jugar("A", comodin2.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", azulRoba2).colorCartaActual());
+        assertEquals("Azul", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", azulRoba2).colorCartaActual());
     }
 
     @Test
     public void Roba2ColorIncorrecto() {
         assertThrows(IllegalArgumentException.class, () -> {
-            juego.jugar("A", comodin2.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verde7);
+            juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verde7);
         });
     }
 
     //Comodin
     @Test
     public void turnosConComodinCorrecto() {
-        assertEquals("Verde", juego.jugar("A", comodin2.comoVerde()).jugar("B", verde7).colorCartaActual());
+        assertEquals("Verde", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).colorCartaActual());
     }
 
     @Test
     public void comodinAceptaComodin() {
-        assertEquals("Azul", juego.jugar("A", comodin2.comoVerde()).jugar("B", comodin3.comoAzul()).colorCartaActual());
+        assertEquals("Azul", juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).colorCartaActual());
     }
 
     @Test
     public void comodinColorIncorrecto() {
         assertThrows(IllegalArgumentException.class, () -> {
-            juego.jugar("A", comodin2.comoVerde()).jugar("B", rojo4);
+            juego.jugar("A", comodin.comoVerde()).jugar("B", rojo4);
         });
     }
 
     // Tomar del mazo
     @Test
     public void turnoConTomaDelMazoCorrecto() {
-        assertEquals("Verde", juego.jugar("A", comodin2.comoVerde()).jugar("B", comodin3.comoAzul()).jugar("C", comodin.comoVerde()).tomar("A").jugar("A", verde2).colorCartaActual());
+        assertEquals("Verde", juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).jugar("C", comodin.comoVerde()).tomar("A").jugar("A", verde2).colorCartaActual());
     }
 
     @Test
@@ -225,9 +222,9 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("B", azulRoba2)
                         .jugar("A", azulSalteo)
                         .jugar("C", comodin.comoVerde())
-                        .jugar("A", comodin2.comoRojo())
+                        .jugar("A", comodin.comoRojo())
                         .jugar("B", rojo4)
-                        .jugar("C", comodin5.comoAzul())
+                        .jugar("C", comodin.comoAzul())
                         .jugar("A", azul4)
                         .jugar("B", verde4)
                         .jugar("C", verdeRoba2)
@@ -235,14 +232,14 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("C", azul7)
                         .tomar("A")
                         .pasarTurno("A")
-                        .jugar("B", comodin3.comoRojo())
+                        .jugar("B", comodin.comoRojo())
                         .jugar("C", rojo3).colorCartaActual());
     }
 
     @Test
     public void pasoDeTurnoSinTomaIncorrecto() {
         assertThrows(IllegalStateException.class, () -> {
-            juego.jugar("A", comodin2.comoVerde()).jugar("B", comodin3.comoAzul()).jugar("C", comodin.comoVerde()).pasarTurno("A");
+            juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).jugar("C", comodin.comoVerde()).pasarTurno("A");
         });
     }
 
@@ -272,9 +269,9 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("B", azulRoba2)
                         .jugar("A", azulSalteo)
                         .jugar("C", comodin.comoVerde())
-                        .jugar("A", comodin2.comoRojo())
+                        .jugar("A", comodin.comoRojo())
                         .jugar("B", rojo4)
-                        .jugar("C", comodin5.comoAzul())
+                        .jugar("C", comodin.comoAzul())
                         .jugar("A", azul4)
                         .jugar("B", verde4)
                         .jugar("C", verdeRoba2)
@@ -282,11 +279,11 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("C", azul7)
                         .tomar("A")
                         .pasarTurno("A")
-                        .jugar("B", comodin3.comoRojo())
+                        .jugar("B", comodin.comoRojo())
                         .jugar("C", rojo3)
                         .jugar("A", rojoReversa)
                         .jugar("C", azulReversa)
-                        .jugar("A", comodin4.comoAmarillo())
+                        .jugar("A", comodin.comoAmarillo())
                         .jugar("B", amarilloSalteo)
                         .tomar("A")
                         .pasarTurno("A")
@@ -301,9 +298,9 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("B", azulRoba2)
                         .jugar("A", azulSalteo)
                         .jugar("C", comodin.comoVerde())
-                        .jugar("A", comodin2.comoRojo())
+                        .jugar("A", comodin.comoRojo())
                         .jugar("B", rojo4)
-                        .jugar("C", comodin5.comoAzul())
+                        .jugar("C", comodin.comoAzul())
                         .jugar("A", azul4)
                         .jugar("B", verde4)
                         .jugar("C", verdeRoba2)
@@ -311,11 +308,11 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("C", azul7)
                         .tomar("A")
                         .pasarTurno("A")
-                        .jugar("B", comodin3.comoRojo())
+                        .jugar("B", comodin.comoRojo())
                         .jugar("C", rojo3)
                         .jugar("A", rojoReversa)
                         .jugar("C", azulReversa)
-                        .jugar("A", comodin4.comoAmarillo())
+                        .jugar("A", comodin.comoAmarillo())
                         .jugar("B", amarilloSalteo)
                         .tomar("A")
                         .pasarTurno("A")

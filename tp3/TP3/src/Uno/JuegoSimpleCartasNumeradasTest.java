@@ -21,11 +21,11 @@ public class JuegoSimpleCartasNumeradasTest {
 
     @BeforeEach
     public void setUp() {
-        rojo2 = new CartaNumerada(2, "Rojo");
-        rojo4 = new CartaNumerada(4, "Rojo");
-        azul4 = new CartaNumerada(4, "Azul");
-        verde4 = new CartaNumerada(4, "Verde");
-        azul2 = new CartaNumerada(2, "Azul");
+        rojo2 = CartaNumerada.with(2, "Rojo");
+        rojo4 = CartaNumerada.with(4, "Rojo");
+        azul4 = CartaNumerada.with(4, "Azul");
+        verde4 = CartaNumerada.with(4, "Verde");
+        azul2 = CartaNumerada.with(2, "Azul");
         mazoSimple = List.of(rojo2, rojo4, azul4, verde4, azul2);
         juegoSimple = new Juego(mazoSimple, 2, "A", "B");
     }

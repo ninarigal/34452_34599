@@ -2,8 +2,11 @@ package Uno;
 
 public class CartaRoba2 extends CartaDeAccion{
 
-    public CartaRoba2(String color) {
+    private CartaRoba2(String color) {
         super(color);
+    }
+    public static CartaRoba2 with(String color) {
+        return new CartaRoba2(color);
     }
     public void aplicarEfecto(Juego juego) {
         juego.robar2Cartas(juego.turnoActual());
