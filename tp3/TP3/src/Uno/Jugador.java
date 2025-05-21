@@ -6,10 +6,12 @@ public class Jugador {
     private String nombre;
     private Jugador derecha, izquierda;
     private List<Carta> mano;
+    private boolean yaTomoEnEsteTurno;
 
     public Jugador(String nombre, List<Carta> mano) {
         this.nombre = nombre;
         this.mano   = mano;
+        this.yaTomoEnEsteTurno = false;
     }
 
     public String getNombre() { return nombre; }
@@ -21,5 +23,16 @@ public class Jugador {
     }
     public Jugador getDerecha()   { return derecha; }
     public Jugador getIzquierda() { return izquierda; }
+
+    public boolean getYaTomoEnEsteTurno() {
+        return yaTomoEnEsteTurno;
+    }
+    public void setTrueToma() {
+        yaTomoEnEsteTurno = true;
+    }
+
+    public void setFalseToma() {
+        yaTomoEnEsteTurno = false;
+    }
 }
 

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JuegoSimpleTodasLasCartasTest {
+public class JuegoTests {
     private Carta rojo2;
     private Carta rojo3;
     private Carta rojo4;
@@ -34,14 +34,15 @@ public class JuegoSimpleTodasLasCartasTest {
     private Carta amarilloRoba2;
     private Carta azulRoba2;
 
-
     private CartaComodin comodin;
 
-
+    private List<Carta> mazoBasico;
     private List<Carta> mazoSimple;
     private List<Carta> mazoEmpiezaRoba2;
     private List<Carta> mazoEmpiezaReversa;
     private List<Carta> mazoEmpiezaSalteo;
+
+    private Juego juegoBasico;
     private Juego juego;
     private Juego juegoSimple;
     private Juego juegoEmpiezaRoba2;
@@ -78,7 +79,10 @@ public class JuegoSimpleTodasLasCartasTest {
         comodin = CartaComodin.with();
 
 
-
+        mazoBasico = List.of(rojo2,
+                rojo4, azul4, verde4,
+                azul2, verde4, azul7,
+                verde2, verde3);
         mazoSimple = List.of(rojo2, // inicial
                 azul4, azulSalteo, rojoReversa, amarillo2, amarillo3, comodin, azul2, // A
                 verde4, rojo4, azulRoba2, amarilloSalteo, verde7, verdeSalteo, comodin,  // B
@@ -86,8 +90,13 @@ public class JuegoSimpleTodasLasCartasTest {
                 verde2, amarillo4, rojo5, comodin, amarilloReversa, verde3); // mazo
         mazoEmpiezaRoba2 = List.of(azulRoba2, azul2, rojo5, azul4,  comodin, azul7,  amarilloReversa, verdeSalteo, comodin );
         mazoEmpiezaSalteo = List.of(azulSalteo, azul2, rojo5, azul4,  comodin, azul7,  amarilloReversa, verdeSalteo, comodin );
-        mazoEmpiezaReversa = List.of(azulReversa, azul2, rojo5, azul4,  comodin, azul7,  amarilloReversa, verdeSalteo, comodin );
+        mazoEmpiezaReversa = List.of(azulReversa,
+                azul2, rojo5,
+                azul4,  comodin,
+                azul7,  amarilloReversa,
+                verdeSalteo, comodin );
 
+        juegoBasico = new Juego(mazoBasico, 3, "A", "B");
         juego = new Juego(mazoSimple, 7, "A", "B", "C");
         juegoSimple = new Juego(mazoSimple, 1, "A", "B", "C");
         juegoEmpiezaRoba2 = new Juego(mazoEmpiezaRoba2, 2, "A", "B", "C");
@@ -95,11 +104,53 @@ public class JuegoSimpleTodasLasCartasTest {
         juegoEmpiezaSalteo = new Juego(mazoEmpiezaSalteo, 2, "A", "B", "C");
     }
 
+    // Testeos Básicos
+
+    @Test
+    public void testCartaInicialALaVistaColor(){
+        assertEquals("Rojo", juegoBasico.colorCartaActual());
+    }
+
+    @Test
+    public void unaJugadaValidaJugadorAColor(){
+        assertEquals("Rojo",juegoBasico.jugar("A", rojo4).colorCartaActual());
+    }
+
+    @Test
+    public void unaJugadaInvalidaJugadorA(){
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", azul4);});
+    }
+
+    @Test
+    public void unaCartaInvalidaJugadorA(){
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", verde4);});
+    }
+
+    @Test
+    public void dosCartasValidasJugadorAJugadorB(){
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", azul4).jugar("B", azul2);});
+    }
+    @Test
+    public void juegoSimpleColorJugadorAJugadorB(){
+        assertEquals("Verde", juegoBasico.jugar("A", rojo4).jugar("B", verde4).colorCartaActual());
+    }
+
+    @Test
+    public void jugadorACartaRepetida(){
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", rojo4).jugar("B", verde4).jugar("A", rojo4);});
+    }
+
+    @Test
+    void testTurnoIncorrecto() {
+        assertThrows(IllegalStateException.class, () -> {juegoBasico.jugar("B", azul2);});
+    }
+
+
     //Reversa
 
     @Test
     public void turnosConReversaCorrecto() {
-        assertEquals("Rojo", juego.jugar("A", rojoReversa).jugar("C", rojo3).colorCartaActual());
+        assertEquals(rojo3, juego.jugar("A", rojoReversa).jugar("C", rojo3).cartaActual());
     }
 
     @Test
@@ -111,13 +162,13 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void reversaAceptaComodin() {
-        assertEquals("Verde", juego.jugar("A", rojoReversa).jugar("C", comodin.comoVerde()).colorCartaActual());
+        assertEquals(comodin.comoVerde(), juego.jugar("A", rojoReversa).jugar("C", comodin.comoVerde()).cartaActual());
 
     }
 
     @Test
     public void reversaAceptaReversa() { // Se puede apoyar otra reversa de otro color
-        assertEquals("Azul", juego.jugar("A", rojoReversa).jugar("C", azulReversa).jugar("A", azul4).colorCartaActual());
+        assertEquals(azul4, juego.jugar("A", rojoReversa).jugar("C", azulReversa).jugar("A", azul4).cartaActual());
     }
 
     @Test
@@ -131,7 +182,7 @@ public class JuegoSimpleTodasLasCartasTest {
     //Salteo
     @Test
     public void turnosConSalteoCorrecto() {
-        assertEquals("Amarillo", juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", amarillo3).colorCartaActual());
+        assertEquals(amarillo3, juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", amarillo3).cartaActual());
     }
 
     @Test
@@ -143,12 +194,12 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void salteoAceptaComodin() {
-        assertEquals("Rojo", juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", comodin.comoRojo()).jugar("B", rojo4).colorCartaActual());
+        assertEquals(rojo4, juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", comodin.comoRojo()).jugar("B", rojo4).cartaActual());
     }
 
     @Test
     public void salteoAceptaSalteo() {
-        assertEquals("Azul", juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", azulSalteo).colorCartaActual());
+        assertEquals(azulSalteo, juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", azulSalteo).cartaActual());
     }
 
     @Test
@@ -161,7 +212,7 @@ public class JuegoSimpleTodasLasCartasTest {
     //Roba2
     @Test
     public void turnosConRoba2Correcto() {
-        assertEquals("Verde", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verdeSalteo).colorCartaActual());
+        assertEquals(verdeSalteo, juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verdeSalteo).cartaActual());
     }
 
     @Test
@@ -173,12 +224,12 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void Roba2AceptaComodin() {
-        assertEquals("Rojo", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", comodin.comoRojo()).jugar("C", rojo3).colorCartaActual());
+        assertEquals(rojo3, juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", comodin.comoRojo()).jugar("C", rojo3).cartaActual());
     }
 
     @Test
     public void Roba2AceptaRoba2() {
-        assertEquals("Azul", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", azulRoba2).colorCartaActual());
+        assertEquals(azulRoba2, juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", azulRoba2).cartaActual());
     }
 
     @Test
@@ -191,12 +242,12 @@ public class JuegoSimpleTodasLasCartasTest {
     //Comodin
     @Test
     public void turnosConComodinCorrecto() {
-        assertEquals("Verde", juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).colorCartaActual());
+        assertEquals(verde7, juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).cartaActual());
     }
 
     @Test
     public void comodinAceptaComodin() {
-        assertEquals("Azul", juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).colorCartaActual());
+        assertEquals(comodin.comoAzul(), juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).cartaActual());
     }
 
     @Test
@@ -209,12 +260,12 @@ public class JuegoSimpleTodasLasCartasTest {
     // Tomar del mazo
     @Test
     public void turnoConTomaDelMazoCorrecto() {
-        assertEquals("Verde", juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).jugar("C", comodin.comoVerde()).tomar("A").jugar("A", verde2).colorCartaActual());
+        assertEquals(verde2, juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).jugar("C", comodin.comoVerde()).tomar("A").jugar("A", verde2).cartaActual());
     }
 
     @Test
     public void turnoConTomaDelMazoYPasoDeTurno() {
-        assertEquals("Rojo",
+        assertEquals(rojo3,
                 juego.jugar("A", azul2)
                         .jugar("B", azulRoba2)
                         .jugar("A", azulSalteo)
@@ -230,7 +281,7 @@ public class JuegoSimpleTodasLasCartasTest {
                         .tomar("A")
                         .pasarTurno("A")
                         .jugar("B", comodin.comoRojo())
-                        .jugar("C", rojo3).colorCartaActual());
+                        .jugar("C", rojo3).cartaActual());
     }
 
     @Test
@@ -281,7 +332,7 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("A", rojoReversa)
                         .jugar("C", azulReversa)
                         .jugar("A", comodin.comoAmarillo())
-                        .jugar("B", amarilloSalteo)
+                        .jugar("B", amarilloSalteo.uno(juego))
                         .tomar("A")
                         .pasarTurno("A")
                         .jugar("B", verdeSalteo)
@@ -310,7 +361,7 @@ public class JuegoSimpleTodasLasCartasTest {
                         .jugar("A", rojoReversa)
                         .jugar("C", azulReversa)
                         .jugar("A", comodin.comoAmarillo())
-                        .jugar("B", amarilloSalteo)
+                        .jugar("B", amarilloSalteo.uno(juego))
                         .tomar("A")
                         .pasarTurno("A")
                         .jugar("B", verdeSalteo)
@@ -327,7 +378,7 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void turnoCorrectoJuegoEmpiezaRoba2(){
-        assertEquals("Azul", juegoEmpiezaRoba2.jugar("B", azul4).colorCartaActual());
+        assertEquals(azul4, juegoEmpiezaRoba2.jugar("B", azul4).cartaActual());
 
     }
 
@@ -340,7 +391,7 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void turnoCorrectoJuegoEmpiezaSalteo(){
-        assertEquals("Azul", juegoEmpiezaSalteo.jugar("B", azul4).colorCartaActual());
+        assertEquals(azul4, juegoEmpiezaSalteo.jugar("B", azul4).cartaActual());
 
     }
 
@@ -352,10 +403,12 @@ public class JuegoSimpleTodasLasCartasTest {
 
     @Test
     public void turnoCorrectoJuegoEmpiezaReversa(){
-        assertEquals("Azul", juegoEmpiezaReversa.jugar("A", azul2).jugar("C", azul7).colorCartaActual());
-
+        assertEquals(azul7, juegoEmpiezaReversa.jugar("A", azul2.uno(juego))
+                .jugar("C", azul7.uno(juego))
+                .cartaActual());
     }
 
+    // Testeos UNO
 
 
 

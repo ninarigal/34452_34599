@@ -12,4 +12,16 @@ public abstract class Carta {
         return this.getClass().getSimpleName();
     }
     public abstract void aplicarEfecto(Juego juego);
+
+    private boolean unoCantado = false;
+    public Carta uno(Juego any) {
+        this.unoCantado = true;
+        return this;
+    }
+    protected boolean isUnoCantado() {
+        return unoCantado;
+    }
+    protected void resetUno() {
+        this.unoCantado = false;
+    }
 }

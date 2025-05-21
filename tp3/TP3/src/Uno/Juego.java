@@ -12,7 +12,6 @@ public class Juego {
     private LinkedList<Jugador> jugadores;
     private Jugador turnoActual;
     private Deque<Carta> mazoRestante;
-    private boolean yaRoboEnEsteTurno;
     private boolean juegoTerminado;
     private String ganador;
     private Controlador controladorActual;
@@ -42,16 +41,18 @@ public class Juego {
     public Juego tomar(String jugador) {
         validarJuegoNoTerminado();
         validarTurno(jugador);
-        getJugador(jugador).getMano().add(robarCarta("Mazo vacio al intentar robar carta"));
-        yaRoboEnEsteTurno = true;
+        Jugador j = getJugador(jugador);
+        j.getMano().add(robarCarta("Mazo vacio al intentar robar carta"));
+        j.setTrueToma();
         return this;
     }
 
     public Juego pasarTurno(String jugador) {
         validarTurno(jugador);
-        validarYaRoboEnTurno();
+        Jugador j = getJugador(jugador);
+        validarYaRoboEnTurno(j);
         siguienteTurno();
-        yaRoboEnEsteTurno = false;
+        j.setFalseToma();
         return this;
     }
 
@@ -62,16 +63,21 @@ public class Juego {
         Jugador jugador = getJugador(nombreJugador);
         validarPoseeCarta(jugador, carta);
         validarCartaValida(carta);
+        int antes = jugador.getMano().size();
 
         jugador.getMano().remove(carta);
+
+        if (antes == 2 && !carta.isUnoCantado()) {
+            robar2Cartas(jugador);
+        }
+        carta.resetUno();
 
         if (jugador.getMano().isEmpty()) {
             return declararGanador(nombreJugador);
         }
 
         cartaActual = carta;
-        yaRoboEnEsteTurno = false;
-
+        jugador.setFalseToma();
         carta.aplicarEfecto(this);
         siguienteTurno();
         return this;
@@ -102,8 +108,8 @@ public class Juego {
     }
 
 
-    private void validarYaRoboEnTurno() {
-        if (!yaRoboEnEsteTurno) {
+    private void validarYaRoboEnTurno(Jugador jugador) {
+        if (!jugador.getYaTomoEnEsteTurno()) {
             throw new IllegalStateException("Solo podés pasar el turno después de robar");
         }
     }
