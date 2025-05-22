@@ -43,7 +43,7 @@ public class Juego {
         validarTurno(jugador);
         Jugador j = getJugador(jugador);
         j.getMano().add(robarCarta("Mazo vacio al intentar robar carta"));
-        j.setTrueToma();
+        j.setToma(true);
         return this;
     }
 
@@ -52,7 +52,7 @@ public class Juego {
         Jugador j = getJugador(jugador);
         validarYaRoboEnTurno(j);
         siguienteTurno();
-        j.setFalseToma();
+        j.setToma(false);
         return this;
     }
 
@@ -77,7 +77,7 @@ public class Juego {
         }
 
         cartaActual = carta;
-        jugador.setFalseToma();
+        jugador.setToma(false);
         carta.aplicarEfecto(this);
         siguienteTurno();
         return this;

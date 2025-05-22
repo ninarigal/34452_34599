@@ -13,26 +13,16 @@ public class Jugador {
         this.mano   = mano;
         this.yaTomoEnEsteTurno = false;
     }
-
     public String getNombre() { return nombre; }
     public List<Carta> getMano() { return mano; }
-
     public void setVecinos(Jugador izquierda, Jugador derecha) {
         this.izquierda = izquierda;
         this.derecha   = derecha;
     }
     public Jugador getDerecha()   { return derecha; }
     public Jugador getIzquierda() { return izquierda; }
+    public boolean getYaTomoEnEsteTurno() { return yaTomoEnEsteTurno;}
+    public void setToma(boolean estado) { this.yaTomoEnEsteTurno = estado; }
 
-    public boolean getYaTomoEnEsteTurno() {
-        return yaTomoEnEsteTurno;
-    }
-    public void setTrueToma() {
-        yaTomoEnEsteTurno = true;
-    }
-
-    public void setFalseToma() {
-        yaTomoEnEsteTurno = false;
-    }
 }
 

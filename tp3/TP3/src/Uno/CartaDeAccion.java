@@ -19,7 +19,6 @@ public abstract class CartaDeAccion extends Carta {
         return nueva.teGustaColorDe(this.color) || nueva.teGustaTipoDe(this);
     }
 
-
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;

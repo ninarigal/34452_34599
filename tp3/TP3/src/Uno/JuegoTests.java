@@ -178,7 +178,6 @@ public class JuegoTests {
         });
     }
 
-
     //Salteo
     @Test
     public void turnosConSalteoCorrecto() {
@@ -296,15 +295,12 @@ public class JuegoTests {
         assertThrows(IllegalStateException.class, () -> juego.ganador());
     }
 
-
     @Test
     public void ganadorDespuesDeUltimaCarta() {
         assertEquals("C", juegoSimple.tomar("A").pasarTurno("A").tomar("B").pasarTurno("B").jugar("C", rojoReversa).ganador());
     }
 
-
     @Test
-
     public void tomarCartaEnJuegoTerminado() {
         assertThrows(IllegalStateException.class, () -> juegoSimple.tomar("A").pasarTurno("A").tomar("B").pasarTurno("B").jugar("C", rojoReversa).tomar("B"));
 
@@ -332,7 +328,7 @@ public class JuegoTests {
                         .jugar("A", rojoReversa)
                         .jugar("C", azulReversa)
                         .jugar("A", comodin.comoAmarillo())
-                        .jugar("B", amarilloSalteo.uno(juego))
+                        .jugar("B", amarilloSalteo.uno())
                         .tomar("A")
                         .pasarTurno("A")
                         .jugar("B", verdeSalteo)
@@ -361,14 +357,12 @@ public class JuegoTests {
                         .jugar("A", rojoReversa)
                         .jugar("C", azulReversa)
                         .jugar("A", comodin.comoAmarillo())
-                        .jugar("B", amarilloSalteo.uno(juego))
+                        .jugar("B", amarilloSalteo.uno())
                         .tomar("A")
                         .pasarTurno("A")
                         .jugar("B", verdeSalteo)
                         .jugar("A", verde3));
     }
-
-
 
     @Test
     public void turnoIncorrectoJuegoEmpiezaRoba2(){
@@ -381,7 +375,6 @@ public class JuegoTests {
         assertEquals(azul4, juegoEmpiezaRoba2.jugar("B", azul4).cartaActual());
 
     }
-
 
     @Test
     public void turnoIncorrectoJuegoEmpiezaSalteo(){
@@ -403,8 +396,8 @@ public class JuegoTests {
 
     @Test
     public void turnoCorrectoJuegoEmpiezaReversa(){
-        assertEquals(azul7, juegoEmpiezaReversa.jugar("A", azul2.uno(juego))
-                .jugar("C", azul7.uno(juego))
+        assertEquals(azul7, juegoEmpiezaReversa.jugar("A", azul2.uno())
+                .jugar("C", azul7.uno())
                 .cartaActual());
     }
 
