@@ -108,12 +108,12 @@ public class JuegoTests {
 
     @Test
     public void testCartaInicialALaVistaColor(){
-        assertEquals("Rojo", juegoBasico.colorCartaActual());
+        assertEquals(rojo2, juegoBasico.cartaActual());
     }
 
     @Test
     public void unaJugadaValidaJugadorAColor(){
-        assertEquals("Rojo",juegoBasico.jugar("A", rojo4).colorCartaActual());
+        assertEquals(rojo4,juegoBasico.jugar("A", rojo4).cartaActual());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class JuegoTests {
     }
     @Test
     public void juegoSimpleColorJugadorAJugadorB(){
-        assertEquals("Verde", juegoBasico.jugar("A", rojo4).jugar("B", verde4).colorCartaActual());
+        assertEquals(verde4, juegoBasico.jugar("A", rojo4).jugar("B", verde4).cartaActual());
     }
 
     @Test
@@ -296,7 +296,7 @@ public class JuegoTests {
     }
 
     @Test
-    public void ganadorDespuesDeUltimaCarta() {
+    public void ganadorDespuesDeJuegoTerminado() {
         assertEquals("C", juegoSimple.tomar("A").pasarTurno("A").tomar("B").pasarTurno("B").jugar("C", rojoReversa).ganador());
     }
 
@@ -307,7 +307,7 @@ public class JuegoTests {
     }
 
     @Test
-    public void ganadorJuegoTerminado() {
+    public void ganadorJuegoTerminadoCantandoUno() {
         assertEquals("B",
                 juego.jugar("A", azul2)
                         .jugar("B", azulRoba2)
@@ -329,6 +329,35 @@ public class JuegoTests {
                         .jugar("C", azulReversa)
                         .jugar("A", comodin.comoAmarillo())
                         .jugar("B", amarilloSalteo.uno())
+                        .tomar("A")
+                        .pasarTurno("A")
+                        .jugar("B", verdeSalteo)
+                        .ganador());
+    }
+
+    @Test
+    public void jugadorNoCantaUno() {
+        assertThrows(IllegalArgumentException.class, () ->
+                juego.jugar("A", azul2)
+                        .jugar("B", azulRoba2)
+                        .jugar("A", azulSalteo)
+                        .jugar("C", comodin.comoVerde())
+                        .jugar("A", comodin.comoRojo())
+                        .jugar("B", rojo4)
+                        .jugar("C", comodin.comoAzul())
+                        .jugar("A", azul4)
+                        .jugar("B", verde4)
+                        .jugar("C", verdeRoba2)
+                        .jugar("B", verde7)
+                        .jugar("C", azul7)
+                        .tomar("A")
+                        .pasarTurno("A")
+                        .jugar("B", comodin.comoRojo())
+                        .jugar("C", rojo3)
+                        .jugar("A", rojoReversa)
+                        .jugar("C", azulReversa)
+                        .jugar("A", comodin.comoAmarillo())
+                        .jugar("B", amarilloSalteo)
                         .tomar("A")
                         .pasarTurno("A")
                         .jugar("B", verdeSalteo)
@@ -400,10 +429,6 @@ public class JuegoTests {
                 .jugar("C", azul7.uno())
                 .cartaActual());
     }
-
-    // Testeos UNO
-
-
 
 }
 
