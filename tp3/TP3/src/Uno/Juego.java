@@ -97,9 +97,10 @@ public class Juego {
     }
 
     public void robar2Cartas(Jugador jugador) {
-        for (int i = 0; i < 2; i++) {
-            jugador.getMano().add(robarCarta("Mazo vacio al intentar robar carta"));
-        }
+        IntStream.range(0, 2)
+                .mapToObj(i -> robarCarta("Mazo vacio al intentar robar carta"))
+                .forEach(carta -> jugador.getMano().add(carta));
+
     }
 
     public String ganador(){
@@ -158,12 +159,17 @@ public class Juego {
 
     private void asignarVecinos(LinkedList<Jugador> lista) {
         int n = lista.size();
-        for (int i = 0; i < n; i++) {
-            Jugador actual = lista.get(i);
-            Jugador izq    = (i == 0)     ? lista.getLast() : lista.get(i - 1);
-            Jugador der    = (i == n - 1) ? lista.getFirst()     : lista.get(i + 1);
-            actual.setVecinos(izq, der);
-        }
+        IntStream.range(0, n)
+                .forEach(i -> {
+                    Jugador actual = lista.get(i);
+                    Jugador izq = (i == 0)
+                            ? lista.getLast()
+                            : lista.get(i - 1);
+                    Jugador der = (i == n - 1)
+                            ? lista.getFirst()
+                            : lista.get(i + 1);
+                    actual.setVecinos(izq, der);
+                });
     }
 
     private Jugador getJugador(String nombre) {
