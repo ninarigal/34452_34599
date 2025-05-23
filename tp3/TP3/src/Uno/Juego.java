@@ -26,16 +26,8 @@ public class Juego {
         this.cartaActual.aplicarEfecto(this);
     }
 
-    public String colorCartaActual() {
-        return cartaActual.color();
-    }
-
     public Carta cartaActual() {
         return cartaActual;
-    }
-
-    public String jugadorEnTurno() {
-        return this.turnoActual.getNombre();
     }
 
     public Juego tomar(String jugador) {
@@ -108,6 +100,9 @@ public class Juego {
         else return ganador;
     }
 
+    private String jugadorEnTurno() {
+        return this.turnoActual.getNombre();
+    }
 
     private void validarYaRoboEnTurno(Jugador jugador) {
         if (!jugador.getYaTomoEnEsteTurno()) {
