@@ -42,7 +42,8 @@ public class JuegoTests {
     private List<Carta> mazoEmpiezaReversa;
     private List<Carta> mazoEmpiezaSalteo;
 
-    private Juego juegoBasico;
+    private Juego juegoBasico2Cartas;
+    private Juego juegoBasico3Cartas;
     private Juego juego;
     private Juego juegoSimple;
     private Juego juegoEmpiezaRoba2;
@@ -96,7 +97,8 @@ public class JuegoTests {
                 azul7,  amarilloReversa,
                 verdeSalteo, comodin );
 
-        juegoBasico = new Juego(mazoBasico, 3, "A", "B");
+        juegoBasico2Cartas = new Juego(mazoBasico, 2, "A", "B");
+        juegoBasico3Cartas = new Juego(mazoBasico, 3, "A", "B");
         juego = new Juego(mazoSimple, 7, "A", "B", "C");
         juegoSimple = new Juego(mazoSimple, 1, "A", "B", "C");
         juegoEmpiezaRoba2 = new Juego(mazoEmpiezaRoba2, 2, "A", "B", "C");
@@ -104,49 +106,44 @@ public class JuegoTests {
         juegoEmpiezaSalteo = new Juego(mazoEmpiezaSalteo, 2, "A", "B", "C");
     }
 
-    // Testeos Básicos
-
     @Test
     public void testCartaInicialALaVistaColor(){
-        assertEquals(rojo2, juegoBasico.cartaActual());
+        assertEquals(rojo2, juegoBasico3Cartas.cartaActual());
     }
 
     @Test
     public void unaJugadaValidaJugadorAColor(){
-        assertEquals(rojo4,juegoBasico.jugar("A", rojo4).cartaActual());
+        assertEquals(rojo4,juegoBasico3Cartas.jugar("A", rojo4).cartaActual());
     }
 
     @Test
     public void unaJugadaInvalidaJugadorA(){
-        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", azul4);});
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico3Cartas.jugar("A", azul4);});
     }
 
     @Test
     public void unaCartaInvalidaJugadorA(){
-        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", verde4);});
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico3Cartas.jugar("A", verde4);});
     }
 
     @Test
     public void dosCartasValidasJugadorAJugadorB(){
-        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", azul4).jugar("B", azul2);});
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico3Cartas.jugar("A", azul4).jugar("B", azul2);});
     }
     @Test
     public void juegoSimpleColorJugadorAJugadorB(){
-        assertEquals(verde4, juegoBasico.jugar("A", rojo4).jugar("B", verde4).cartaActual());
+        assertEquals(verde4, juegoBasico3Cartas.jugar("A", rojo4).jugar("B", verde4).cartaActual());
     }
 
     @Test
     public void jugadorACartaRepetida(){
-        assertThrows(IllegalArgumentException.class, () -> {juegoBasico.jugar("A", rojo4).jugar("B", verde4).jugar("A", rojo4);});
+        assertThrows(IllegalArgumentException.class, () -> {juegoBasico3Cartas.jugar("A", rojo4).jugar("B", verde4).jugar("A", rojo4);});
     }
 
     @Test
     void testTurnoIncorrecto() {
-        assertThrows(IllegalStateException.class, () -> {juegoBasico.jugar("B", azul2);});
+        assertThrows(IllegalStateException.class, () -> {juegoBasico3Cartas.jugar("B", azul2);});
     }
-
-
-    //Reversa
 
     @Test
     public void turnosConReversaCorrecto() {
@@ -167,18 +164,17 @@ public class JuegoTests {
     }
 
     @Test
-    public void reversaAceptaReversa() { // Se puede apoyar otra reversa de otro color
+    public void reversaAceptaReversa() {
         assertEquals(azul4, juego.jugar("A", rojoReversa).jugar("C", azulReversa).jugar("A", azul4).cartaActual());
     }
 
     @Test
-    public void reversaColorIncorrecto() { //No se puede apoyar otra carta de otro color que no sea reversa
+    public void reversaColorIncorrecto() {
         assertThrows(IllegalArgumentException.class, () -> {
             juego.jugar("A", rojoReversa).jugar("C", verdeRoba2);
         });
     }
 
-    //Salteo
     @Test
     public void turnosConSalteoCorrecto() {
         assertEquals(amarillo3, juego.jugar("A", amarillo2).jugar("B", amarilloSalteo).jugar("A", amarillo3).cartaActual());
@@ -208,7 +204,6 @@ public class JuegoTests {
         });
     }
 
-    //Roba2
     @Test
     public void turnosConRoba2Correcto() {
         assertEquals(verdeSalteo, juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).jugar("C", verdeRoba2).jugar("B", verdeSalteo).cartaActual());
@@ -238,7 +233,6 @@ public class JuegoTests {
         });
     }
 
-    //Comodin
     @Test
     public void turnosConComodinCorrecto() {
         assertEquals(verde7, juego.jugar("A", comodin.comoVerde()).jugar("B", verde7).cartaActual());
@@ -256,7 +250,6 @@ public class JuegoTests {
         });
     }
 
-    // Tomar del mazo
     @Test
     public void turnoConTomaDelMazoCorrecto() {
         assertEquals(verde2, juego.jugar("A", comodin.comoVerde()).jugar("B", comodin.comoAzul()).jugar("C", comodin.comoVerde()).tomar("A").jugar("A", verde2).cartaActual());
@@ -304,6 +297,16 @@ public class JuegoTests {
     public void tomarCartaEnJuegoTerminado() {
         assertThrows(IllegalStateException.class, () -> juegoSimple.tomar("A").pasarTurno("A").tomar("B").pasarTurno("B").jugar("C", rojoReversa).tomar("B"));
 
+    }
+
+    @Test
+    public void jugadorACantaUnoYTerminaJuego() {
+        assertEquals("A", juegoBasico2Cartas.jugar("A", rojo4.uno()).jugar("B", verde4.uno()).jugar("A", azul4).ganador());
+    }
+
+    @Test
+    public void jugadorANoCantaUnoYJuegaCartaDePenalizacion() {
+        assertEquals(verde4, juegoBasico2Cartas.jugar("A", rojo4).jugar("B", verde4.uno()).jugar("A", verde4).cartaActual());
     }
 
     @Test
