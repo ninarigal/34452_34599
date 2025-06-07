@@ -1,12 +1,11 @@
 package org.udesa.unoback.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.udesa.unoback.model.Card;
-import org.udesa.unoback.model.DeckBuilder;
 import org.udesa.unoback.model.JsonCard;
 import org.udesa.unoback.model.Match;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -15,15 +14,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class UnoService {
+    @Autowired
+    Dealer dealer;
     private Map<UUID, Match> matches = new HashMap<>();
-
 
     public UUID newMatch(List<String> players) {
         UUID matchId = UUID.randomUUID();
-        List<Card> deck = DeckBuilder.standardUnoDeck();
-        Collections.shuffle(deck);
-        Match match = new Match(deck, 7, players);
-        matches.put(matchId, match);
+        matches.put(matchId, Match.fullMatch(dealer.fullDeck(), players));
         return matchId;
     }
 

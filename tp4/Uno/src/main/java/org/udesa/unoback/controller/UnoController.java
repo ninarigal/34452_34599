@@ -15,9 +15,13 @@ public class UnoController {
 
     @Autowired UnoService unoService;
 
+    @ExceptionHandler
+    public ResponseEntity<String> handleIllegalArgument(RuntimeException ex) {
+        return ResponseEntity.internalServerError().body(ex.getMessage());
+    }
+
     @PostMapping("newmatch") public ResponseEntity newMatch(@RequestParam List<String> players ) {
-        UUID id = unoService.newMatch(players);
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok(unoService.newMatch(players));
     }
     @PostMapping("play/{matchId}/{player}") public ResponseEntity play( @PathVariable UUID matchId, @PathVariable String player, @RequestBody JsonCard card ) {
         unoService.play(matchId, player, card);
