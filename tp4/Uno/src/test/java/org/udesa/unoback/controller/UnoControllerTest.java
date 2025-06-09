@@ -163,17 +163,13 @@ public class UnoControllerTest {
     }
 
     private void playerDraw(UUID matchId, String player) throws Exception {
-        mockMvc.perform(post("/uno/draw/" + matchId + "/" + player)
-                        .contentType( MediaType.APPLICATION_JSON )
-                        .param("player", player))
+        mockMvc.perform(post("/uno/draw/" + matchId + "/" + player))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     private void playerDrawFailing(UUID matchId, String player) throws Exception {
-        mockMvc.perform(post("/uno/draw/" + matchId + "/" + player)
-                        .contentType( MediaType.APPLICATION_JSON )
-                        .param("player", player))
+        mockMvc.perform(post("/uno/draw/" + matchId + "/" + player))
                 .andDo(print())
                 .andExpect(status().is(500));
     }
