@@ -22,8 +22,6 @@ public class UnoServiceTest {
     @MockBean
     private Dealer dealer;
 
-    private List<Card> fixedDeck;
-
     static Card RedOn( int n ) { return new NumberCard( "Red", n ); }
     static Card BlueOn( int n ) { return new NumberCard( "Blue", n ); }
     static Card YellowOn( int n ) { return new NumberCard( "Yellow", n ); }
@@ -50,13 +48,7 @@ public class UnoServiceTest {
 
     @BeforeEach
     void setUp() {
-        fixedDeck = new ArrayList<>();
-        fixedDeck.add(red1);
-        fixedDeck.addAll(List.of(red1, red2, red3, red4, red5, red1, red2));
-        fixedDeck.addAll(List.of(blue1, blue2, blue3, blue4, blue1, blue2, blue3));
-        fixedDeck.addAll(List.of(yellow5, yellow2, yellow3));
-
-        when(dealer.fullDeck()).thenReturn(fixedDeck);
+        when(dealer.fullDeck()).thenReturn(fullDeck());
     }
 
     @Test
@@ -111,5 +103,14 @@ public class UnoServiceTest {
         unoService.play(matchId, "Ana", yellow5);
         unoService.draw(matchId, "Nina");
         unoService.play(matchId, "Nina", yellow2);
+    }
+
+    public static List<Card> fullDeck(){
+        List<Card> fixedDeck = new ArrayList<>();
+        fixedDeck.add(red1);
+        fixedDeck.addAll(List.of(red1, red2, red3, red4, red5, red1, green5));
+        fixedDeck.addAll(List.of(blue1, blue2, blue3, blue4, blue1, blue2, blue3));
+        fixedDeck.addAll(List.of(yellow5, yellow2, yellow3));
+        return fixedDeck;
     }
 }

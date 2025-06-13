@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.udesa.unoback.model.*;
 import org.udesa.unoback.service.Dealer;
 import org.udesa.unoback.service.UnoService;
+import org.udesa.unoback.service.UnoServiceTest;
 
 
 @SpringBootTest
@@ -35,7 +36,6 @@ public class UnoControllerTest {
 
     @MockBean private Dealer dealer;
 
-    private List<Card> fixedDeck;
 
     static Card RedOn( int n ) { return new NumberCard( "Red", n ); }
     static Card BlueOn( int n ) { return new NumberCard( "Blue", n ); }
@@ -63,13 +63,7 @@ public class UnoControllerTest {
 
     @BeforeEach
     void setUp() {
-        fixedDeck = new ArrayList<>();
-        fixedDeck.add(red1);
-        fixedDeck.addAll(List.of(red1, red2, red3, red4, red5, red1, red2));
-        fixedDeck.addAll(List.of(blue1, blue2, blue3, blue4, blue1, blue2, blue3));
-        fixedDeck.addAll(List.of(yellow5, yellow2, yellow3));
-
-        when(dealer.fullDeck()).thenReturn(fixedDeck);
+        when(dealer.fullDeck()).thenReturn(UnoServiceTest.fullDeck());
     }
 
     @Test
@@ -96,24 +90,33 @@ public class UnoControllerTest {
 
     @Test
     void test04CantPlayNotHisTurn() throws Exception {
-        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "B", blue1);
-
+        String resp = playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "B", blue1);
+        assertEquals(Player.NotPlayersTurn + "B", resp);
     }
 
     @Test
     void test05CantPlayNotHisCard() throws Exception {
-        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "A", blue1);
+        String resp = playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "A", blue1);
+        assertEquals(Match.NotACardInHand + "A", resp);
     }
 
     @Test
     void test05CantPlayPlayerDoesntExist() throws Exception {
-        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "C", blue1);
+        String resp = playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "C", blue1);
+        assertEquals(Player.NotPlayersTurn + "C", resp);
     }
 
     @Test
     void test05CantPlayCardDoentExist() throws Exception {
         Card grey1 = new NumberCard( "Grey", 1 );
-        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "C", grey1);
+        String resp = playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "A", grey1);
+        assertEquals(Match.NotACardInHand + "A", resp);
+    }
+
+    @Test
+    void test05CantPlayCardDoesntMatch() throws Exception {
+        String resp = playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "A", green5);
+        assertEquals(Match.CardDoNotMatch, resp);
     }
 
 
@@ -170,12 +173,15 @@ public class UnoControllerTest {
                 .andExpect(status().isOk());
     }
 
-    private void playerPlayFailing(UUID matchId, String player, Card card) throws Exception {
-        mockMvc.perform(post("/uno/play/" + matchId + "/" + player)
+    private String playerPlayFailing(UUID matchId, String player, Card card) throws Exception {
+        return mockMvc.perform(post("/uno/play/" + matchId + "/" + player)
                         .contentType( MediaType.APPLICATION_JSON )
                         .content(card.asJson().toString()))
                 .andDo(print())
-                .andExpect(status().is(500));
+                .andExpect(status().is(500))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
     }
 
     private void playerDraw(UUID matchId, String player) throws Exception {
