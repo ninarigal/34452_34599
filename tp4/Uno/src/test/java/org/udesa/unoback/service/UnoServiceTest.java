@@ -60,12 +60,15 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void testNewMatch(){
-        assertNotNull(unoService.newMatch(List.of("Nina", "Ana")));
+    public void test01NewMatch(){
+        // assertNotNull(unoService.newMatch(List.of("Nina", "Ana")));
+        assertDoesNotThrow(() -> {
+            assertTrue(unoService.existsMatch(unoService.newMatch(List.of("Nina", "Ana"))));
+        });
     }
 
     @Test
-    public void testNewMatchinitializesCorrectly(){
+    public void test02NewMatchinitializesCorrectly(){
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
         JsonCard active = unoService.activeCard(matchId);
         assertEquals("Red", active.getColor());
@@ -73,13 +76,13 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void testPlayerHand(){
+    public void test03PlayerHand(){
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
         assertEquals(7, unoService.playerHand(matchId).size());
     }
 
     @Test
-    void testPlayOneCard() {
+    void test04PlayOneCard() {
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
         unoService.play(matchId, "Nina", red1.asJson());
         unoService.play(matchId, "Ana", blue1.asJson());
@@ -87,7 +90,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    void testInvalidMatchId() {
+    void test05InvalidMatchId() {
         UUID invalid = UUID.randomUUID();
         assertThrows(RuntimeException.class, () -> unoService.activeCard(invalid));
         assertThrows(RuntimeException.class, () -> unoService.playerHand(invalid));
@@ -96,13 +99,13 @@ public class UnoServiceTest {
     }
 
     @Test
-    void testJuegoFueraDeTurno() {
+    void test06JuegoFueraDeTurno() {
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
         assertThrows(RuntimeException.class, () -> unoService.play(matchId, "Ana", blue1.asJson()));
     }
 
     @Test
-    void testDrawAndPlayOneCard() {
+    void test07DrawAndPlayOneCard() {
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
         unoService.play(matchId, "Nina", red5.asJson());
         unoService.draw(matchId, "Ana");
