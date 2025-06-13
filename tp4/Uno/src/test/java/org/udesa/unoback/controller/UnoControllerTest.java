@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.udesa.unoback.model.*;
@@ -29,7 +31,6 @@ import org.udesa.unoback.service.UnoService;
 public class UnoControllerTest {
 
     @Autowired MockMvc mockMvc;
-    @Autowired UnoService unoService;
     @Autowired ObjectMapper mapper;
 
     @MockBean private Dealer dealer;
@@ -73,47 +74,62 @@ public class UnoControllerTest {
 
     @Test
     public void test01CanCreateMatchWithTwoPlayers() throws Exception {
-        assertNotNull(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")));
+        assertNotNull(UUID.fromString(createMatchFor("A", "B")));
     }
 
+
     @Test
-    void test02NewMatchFails() throws Exception {
-        mockMvc.perform(post("/uno/newmatch"))
+    void test02NewMatchFailsLessPlayers() throws Exception {
+        mockMvc.perform(post("/uno/newmatch")
+                        .param("players", "A"))
                 .andDo(print())
-                .andExpect(status().is(400));
+                .andExpect(status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()));
     }
+
 
     @Test
     void test03PlayInNewMatch() throws Exception {
-        playerPlay(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")), "A", red2);
+        playerPlay(UUID.fromString(createMatchFor("A", "B")), "A", red2);
 
     }
 
+
     @Test
     void test04CantPlayNotHisTurn() throws Exception {
-        playerPlayFailing(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")), "B", blue1);
+        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "B", blue1);
 
     }
 
     @Test
     void test05CantPlayNotHisCard() throws Exception {
-        playerPlayFailing(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")), "A", blue1);
+        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "A", blue1);
     }
 
     @Test
-    void test06DrawCard() throws Exception {
-        playerDraw(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")), "A");
+    void test05CantPlayPlayerDoesntExist() throws Exception {
+        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "C", blue1);
+    }
 
+    @Test
+    void test05CantPlayCardDoentExist() throws Exception {
+        Card grey1 = new NumberCard( "Grey", 1 );
+        playerPlayFailing(UUID.fromString(createMatchFor("A", "B")), "C", grey1);
+    }
+
+
+    @Test
+    void test06DrawCard() throws Exception {
+        playerDraw(UUID.fromString(createMatchFor("A", "B")), "A");
     }
 
     @Test
     void test07CantDrawCard() throws Exception {
-        playerDrawFailing(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")), "B");
+        playerDrawFailing(UUID.fromString(createMatchFor("A", "B")), "B");
     }
 
     @Test
     void test08getActiveCard() throws Exception {
-        JsonCard card = getActiveCard(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")));
+        JsonCard card = getActiveCard(UUID.fromString(createMatchFor("A", "B")));
         assertEquals("Red", card.getColor());
         assertEquals(1, card.getNumber());
     }
@@ -125,7 +141,7 @@ public class UnoControllerTest {
 
     @Test
     void test10getPlayerHand() throws Exception {
-        List<JsonCard> hand = getPlayerHand(UUID.fromString(createMatchFor("A", "B").replaceAll("^\"|\"$", "")));
+        List<JsonCard> hand = getPlayerHand(UUID.fromString(createMatchFor("A", "B")));
         assertEquals(7, hand.size());
     }
 
@@ -134,9 +150,8 @@ public class UnoControllerTest {
         getPlayerHandFailing(UUID.randomUUID());
     }
 
-
     private String createMatchFor(String player1, String player2) throws Exception {
-        return mockMvc.perform(post("/uno/newmatch")
+        String resp = mockMvc.perform(post("/uno/newmatch")
                         .param("players", player1)
                         .param("players", player2))
                 .andDo(print())
@@ -144,6 +159,7 @@ public class UnoControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
+        return mapper.readTree(resp).asText();
     }
 
     private void playerPlay(UUID matchId, String player, Card card) throws Exception {
@@ -187,7 +203,7 @@ public class UnoControllerTest {
     private void getActiveCardFailing(UUID matchId) throws Exception {
         mockMvc.perform(get("/uno/activecard/" + matchId))
                 .andDo(print())
-                .andExpect(status().is(500))
+                .andExpect(status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -206,7 +222,7 @@ public class UnoControllerTest {
     private void getPlayerHandFailing(UUID matchId) throws Exception {
         mockMvc.perform(get("/uno/playerhand/" + matchId))
                 .andDo(print())
-                .andExpect(status().is(500))
+                .andExpect(status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();

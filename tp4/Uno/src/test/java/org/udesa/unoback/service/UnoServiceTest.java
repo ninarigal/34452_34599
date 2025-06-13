@@ -61,7 +61,6 @@ public class UnoServiceTest {
 
     @Test
     public void test01NewMatch(){
-        // assertNotNull(unoService.newMatch(List.of("Nina", "Ana")));
         assertDoesNotThrow(() -> {
             assertTrue(unoService.existsMatch(unoService.newMatch(List.of("Nina", "Ana"))));
         });
@@ -84,8 +83,8 @@ public class UnoServiceTest {
     @Test
     void test04PlayOneCard() {
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
-        unoService.play(matchId, "Nina", red1.asJson());
-        unoService.play(matchId, "Ana", blue1.asJson());
+        unoService.play(matchId, "Nina", red1);
+        unoService.play(matchId, "Ana", blue1);
         assertEquals(6, unoService.playerHand(matchId).size());
     }
 
@@ -94,23 +93,23 @@ public class UnoServiceTest {
         UUID invalid = UUID.randomUUID();
         assertThrows(RuntimeException.class, () -> unoService.activeCard(invalid));
         assertThrows(RuntimeException.class, () -> unoService.playerHand(invalid));
-        assertThrows(RuntimeException.class, () -> unoService.play(invalid, "Ana", blue1.asJson()));
+        assertThrows(RuntimeException.class, () -> unoService.play(invalid, "Ana", blue1));
         assertThrows(RuntimeException.class, () -> unoService.draw(invalid, "Nina"));
     }
 
     @Test
     void test06JuegoFueraDeTurno() {
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
-        assertThrows(RuntimeException.class, () -> unoService.play(matchId, "Ana", blue1.asJson()));
+        assertThrows(RuntimeException.class, () -> unoService.play(matchId, "Ana", blue1));
     }
 
     @Test
     void test07DrawAndPlayOneCard() {
         UUID matchId = unoService.newMatch(List.of("Nina", "Ana"));
-        unoService.play(matchId, "Nina", red5.asJson());
+        unoService.play(matchId, "Nina", red5);
         unoService.draw(matchId, "Ana");
-        unoService.play(matchId, "Ana", yellow5.asJson());
+        unoService.play(matchId, "Ana", yellow5);
         unoService.draw(matchId, "Nina");
-        unoService.play(matchId, "Nina", yellow2.asJson());
+        unoService.play(matchId, "Nina", yellow2);
     }
 }

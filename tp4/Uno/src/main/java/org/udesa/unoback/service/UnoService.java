@@ -24,11 +24,10 @@ public class UnoService {
         return matchId;
     }
 
-    public void play(UUID matchId, String playerName, JsonCard jsonCard) {
+    public void play(UUID matchId, String playerName, Card card) {
         checkMatchExists(matchId);
         Match match = matches.get(matchId);
-        Card carta = jsonCard.asCard();
-        match.play(playerName, carta);
+        match.play(playerName, card);
         matches.put(matchId, match);
     }
 
@@ -57,7 +56,7 @@ public class UnoService {
 
     private void checkMatchExists(UUID matchId) {
         if (!matches.containsKey(matchId)) {
-            throw new RuntimeException("Match not found");
+            throw new IllegalArgumentException("Match not found");
         }
     }
 
