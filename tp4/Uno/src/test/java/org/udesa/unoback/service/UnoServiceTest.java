@@ -31,20 +31,14 @@ public class UnoServiceTest {
     static Card red3 = RedOn( 3 );
     static Card red4 = RedOn( 4 );
     static Card red5 = RedOn( 5 );
-    static Card redDraw2 = new Draw2Card( "Red" );
-    static Card redSkip = new SkipCard( "Red" );
     static Card blue1 = BlueOn( 1 );
     static Card blue2 = BlueOn( 2 );
     static Card blue3 = BlueOn( 3 );
     static Card blue4 = BlueOn( 4 );
-    static Card green1 = GreenOn( 1 );
-    static Card green3() { return GreenOn( 3 ); }
     static Card green5 = GreenOn( 5 );
     static Card yellow2 = YellowOn( 2 );
     static Card yellow3 = YellowOn( 3 );
     static Card yellow5 = YellowOn( 5 );
-    static Card yellowReverse = new ReverseCard( "Yellow" );
-    static WildCard wildCard() { return new WildCard(); }
 
     @BeforeEach
     void setUp() {
